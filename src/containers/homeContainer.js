@@ -12,7 +12,7 @@ class HomeContainer extends Component {
     }
     constructor(props) {
         super(props)
-        console.log("adwdwdw")
+
     }
 
     static onEnter = () => {
@@ -22,14 +22,13 @@ class HomeContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // this.forceUpdate()
         if (this.props.enterTime !== nextProps.enterTime) {
             this.props.getRandomNumber()
         }
     }
 
     static onExit = (callback) => {
-        console.log("exit...........viewWillDissapear")
+        // console.log("viewWillDissapear")
     }
 
 
@@ -37,10 +36,6 @@ class HomeContainer extends Component {
 
 
     render = () => {
-
-
-
-
         const { Layout, numbers } = this.props;
         return <Layout numbers={numbers} />
     }

@@ -1,5 +1,8 @@
 
 import homeRedeucer from './homeReducers'
+import coinListReducer from './coinListReducers'
+import coinDetailsReducer from './coinDetailReducers'
+import favouritCoinReducer from './favouriteCoinReducers'
 import { combineReducers } from 'redux';
 
 const rehydrated = (state = false, action) => {
@@ -13,5 +16,8 @@ const rehydrated = (state = false, action) => {
 
 export default {
     rehydrated,
-    homeRedeucer
+    homeRedeucer,
+    coinListReducer,
+    coinDetailsReducer,
+    favouritCoinReducer
 };

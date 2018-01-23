@@ -1,8 +1,10 @@
 import Colors from '../../../native-base-theme/variables/commonColor';
+import color from '../../../colors/colors'
+import { Platform } from 'react-native';
 
 export default {
     navbarProps: {
-        navigationBarStyle: { backgroundColor: 'white' },
+        navigationBarStyle: { backgroundColor: 'white', borderBottomWidth: Platform === 'ios' ? 0 : 1, borderBottomColor: '#e7e7e7', elevation: 0 },
         titleStyle: {
             color: Colors.textColor,
             alignSelf: 'center',
@@ -11,14 +13,14 @@ export default {
         },
         backButtonTintColor: Colors.textColor,
     },
-
     tabProps: {
         swipeEnabled: false,
-        activeBackgroundColor: 'rgba(255,255,255,0.1)',
-        inactiveBackgroundColor: Colors.brandPrimary,
-        tabBarStyle: { backgroundColor: Colors.brandPrimary },
-    },
+        tabBarStyle: { backgroundColor: color.tabarBackgroundColor },
+        tabBarPosition: 'bottom',
+        showLabel: true,
+        activeTintColor: 'black'
 
+    },
     icons: {
         style: { color: 'white' },
     },

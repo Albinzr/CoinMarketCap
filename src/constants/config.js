@@ -1,5 +1,5 @@
 const devMode = (process.env.NODE_ENV !== 'development');
-
+const prodMode = (process.env.NODE_ENV !== 'production');
 export default {
     // App Details
     appName: 'Starter Kit',

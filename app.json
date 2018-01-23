@@ -1,5 +1,31 @@
 {
   "expo": {
-    "sdkVersion": "23.0.0"
+    "sdkVersion": "23.0.0",
+    "version": "1.0.0",
+    "name": "COIN MARKET CAP",
+    "icon": "./src/assets/images/icon.png",
+    "slug": "coin-market-cap",
+    "orientation": "portrait",
+    "splash": {
+      "resizeMode": "contain",
+      "image": "./src/assets/images/splash.png",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "bundleIdentifier": "com.bitcoin.coinmarketcap"
+    },
+    "android": {
+      "versionCode": 1,
+      "package": "com.bitcoin.coinmarketcapapp",
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "READ_PHONE_STATE",
+        "READ_CONTACTS"
+      ]
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#f1f1f3"
+    }
   }
 }

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Container, Content, Text, H3 } from 'native-base';
 
 const Test = ({ numbers }) => {
-    console.log(numbers, "ooo")
     return (
         <Container>
             <Content>
