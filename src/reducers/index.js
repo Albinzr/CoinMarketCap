@@ -3,6 +3,7 @@ import homeRedeucer from './homeReducers'
 import coinListReducer from './coinListReducers'
 import coinDetailsReducer from './coinDetailReducers'
 import favouritCoinReducer from './favouriteCoinReducers'
+import profileReducers from './profileReducers'
 import { combineReducers } from 'redux';
 
 const rehydrated = (state = false, action) => {
@@ -19,5 +20,6 @@ export default {
     homeRedeucer,
     coinListReducer,
     coinDetailsReducer,
-    favouritCoinReducer
+    favouritCoinReducer,
+    profileReducers
 };

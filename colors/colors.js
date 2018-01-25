@@ -19,7 +19,9 @@ export default Object.assign({
 
     placeholderBackgroundColor: "#f9f9f9",
 
-    tabarBackgroundColor: "#fafafa"
+    tabarBackgroundColor: "#fafafa",
+
+    sepratorColor: "#e6e6e6"
 
 })
 

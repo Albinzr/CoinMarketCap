@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
-import { StatusBar, View } from 'react-native'
+import { StatusBar, View, TouchableOpacity, Text, Image } from 'react-native'
 
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
+
 //
-import { loadAllCoinNames, closeSearch, searchFilter, getCoins } from '../actions/coinListActions';
+import { loadAllCoinNames, closeSearch, searchFilter, getCoins, sortCoins, sortToggle, goToTop } from '../actions/coinListActions';
 import { getFavCoins, addOrRemoveFavourite } from '../actions/favouriteCoinActions'
+import sort from '../constants/sortConstant'
 //
 const timerIntervel = 60000
+const sortTypes = [sort.rank, sort.price, sort.name, sort.change, sort.volume, sort.marketCap/* sort.topGain, sort.topLoser,*/]
 
 class CoinListContainer extends Component {
 
@@ -15,6 +18,21 @@ class CoinListContainer extends Component {
         super(props)
 
         this.goToCoinDetailsScreen = this.goToCoinDetailsScreen.bind(this)
+        this.sortButton = this.sortButton.bind(this)
+    }
+
+    static right = (props) => {
+        return (
+            <TouchableOpacity onPress={() => {
+                props.sortButton()
+            }}>
+                <Image source={require('../assets/images/sort.png')} style={{ width: 24, height: 24, marginRight: 25, }} />
+            </TouchableOpacity >
+        );
+    }
+
+    sortButton() {
+        this.props.sortToggle(this.props.showSortOptions)
     }
 
     goToCoinDetailsScreen(coinName, coinSymbol) {
@@ -25,20 +43,28 @@ class CoinListContainer extends Component {
     }
 
     componentDidMount() {
+        Actions.refresh({ title: '                 Home' })
+        this.props.navigation.setParams({
+            sortButton: this.sortButton
+        })
+
         const {
             getCoins,
             coinsDetails,
             start,
             limit,
             loadMore,
-            loadAllCoinNames
+            loadAllCoinNames,
+            sort
              } = this.props;
-        getCoins(start, limit, coinsDetails, loadMore)
+
+        getCoins(0, 10000, coinsDetails, loadMore, false, "USD", sort)
         loadAllCoinNames()
         setTimeout(() => {
-            getCoins(start, limit, coinsDetails, loadMore)
+            getCoins(0, 10000, coinsDetails, loadMore, false, "USD", this.props.sort)
         }, timerIntervel);
     }
+
 
     render() {
 
@@ -56,7 +82,9 @@ class CoinListContainer extends Component {
             limit,
             loadMore,
             isRefreshing,
-            searchArray } = this.props;
+            showSortOptions,
+            searchArray, sortToggle, sortCoins,
+            shouldScrollToTop, goToTop } = this.props;
         return (
             <Layout searchFilter={searchFilter}
                 coinNames={coinNames}
@@ -72,7 +100,14 @@ class CoinListContainer extends Component {
                 loadMore={loadMore}
                 isRefreshing={isRefreshing}
                 searchArray={searchArray}
-                goToCoinDetailsScreen={this.goToCoinDetailsScreen} />
+                goToCoinDetailsScreen={this.goToCoinDetailsScreen}
+                showSortOptions={showSortOptions}
+                sortTypes={sortTypes}
+                sortToggle={sortToggle}
+                sortCoins={sortCoins}
+                shouldScrollToTop={shouldScrollToTop}
+                goToTop={goToTop}
+            />
         )
 
     }
@@ -86,7 +121,8 @@ const mapStateToProps = state =>
 
 
 const mapDispatchToProps = {
-    loadAllCoinNames, closeSearch, searchFilter, getCoins, getFavCoins, addOrRemoveFavourite
+    loadAllCoinNames, closeSearch, searchFilter, getCoins, sortCoins, sortToggle, goToTop,
+    getFavCoins, addOrRemoveFavourite
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoinListContainer);

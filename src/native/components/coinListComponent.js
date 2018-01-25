@@ -6,6 +6,7 @@ import colors from '../../../colors/colors'
 //
 import SearchBar from '../components/searchComponent'
 import List from '../components/listComponent'
+import SortMenu from './popupList'
 
 const CoinListComponent = ({
     searchFilter,
@@ -23,11 +24,27 @@ const CoinListComponent = ({
     goToCoinDetailsScreen,
     isRefreshing,
     searchArray,
-    width
-  }) => {
+    width,
+    showSortOptions,
+    sortTypes,
+    sortToggle,
+    sortCoins,
+    shouldScrollToTop,
+    goToTop
+}) => {
+
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor='#f1f1f3' Translucent={false} barStyle='dark-content' />
+
+            {showSortOptions ? <SortMenu
+                showSortOptions={showSortOptions}
+                sortTypes={sortTypes}
+                design={styles.sortMenu}
+                sortToggle={sortToggle}
+                sortCoins={sortCoins}
+                coinsDetails={coinsDetails} goToTop={goToTop} /> : null}
+
             <SearchBar search={(key) => {
                 searchFilter(key, coinNames, showSearch)
             }} onPress={closeSearch} />
@@ -44,6 +61,7 @@ const CoinListComponent = ({
                 refresh={() => {
                     getCoins(0, limit, [], true, true)
                 }}
+                shouldScrollToTop={shouldScrollToTop}
             />
 
             {showSearch ? <FlatList
@@ -86,6 +104,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: colors.primaryTextColor
     },
+    sortMenu: {
+        height: 308
+    }
 
 })
 

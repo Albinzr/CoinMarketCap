@@ -15,6 +15,16 @@ export default function userReducer(state = initialState, action) {
             }
             return initialState;
         }
+        case 'COIN_LIST_SORT': {
+            if (action.data) {
+                return {
+                    ...state,
+                    showSortOptions: action.data.showSortOptions,
+                };
+            }
+            return initialState;
+        }
+
         case 'COIN_LIST_RECIVED_COIN_NAME_DATA': {
             if (action.data) {
                 return {
@@ -46,7 +56,15 @@ export default function userReducer(state = initialState, action) {
             return initialState;
         }
 
-
+        case 'COIN_LIST_SCROLL_TO_TOP': {
+            if (action.data) {
+                return {
+                    ...state,
+                    shouldScrollToTop: action.data.shouldScrollToTop
+                };
+            }
+            return initialState;
+        }
         case 'COIN_LIST_SEARCH_LIST': {
             if (action.data) {
                 return {
@@ -88,7 +106,9 @@ export default function userReducer(state = initialState, action) {
                     isRefreshing: action.data.isRefreshing,
                     loadMore: action.data.loadMore,
                     start: action.data.start,
-                    isRefreshing: action.data.isRefreshing
+                    isRefreshing: action.data.isRefreshing,
+                    shouldScrollToTop: action.data.shouldScrollToTop,
+                    sort: action.data.sort
                 };
             }
             return initialState;

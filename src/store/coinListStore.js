@@ -8,5 +8,8 @@ export default {
     searchArray: [],
     showSearch: false,
     isRefreshing: false,
-    favCoins: []
+    favCoins: [],
+    sort: "rank",
+    showSortOptions: false,
+    shouldScrollToTop: false
 };

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Container, Content, Text, Form, Item, Label, Input, Button } from 'native-base';
 import { Actions } from "react-native-router-flux";
 import { getRandomNumber, setError } from '../actions/homeActions';
 

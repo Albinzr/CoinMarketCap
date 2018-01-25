@@ -1,18 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Container, Content, Text, H3 } from 'native-base';
+import {
+    Text,
+    View,
+    StyleSheet,
+    FlatList,
+    Dimensions,
+    Image,
+    TouchableOpacity,
+    Platform,
+    RefreshControl,
+    StatusBar
+} from 'react-native'
 
-const Test = ({ numbers }) => {
-    return (
-        <Container>
-            <Content>
-                <H3>{numbers}</H3>
-            </Content>
-        </Container>
-    );
+
+const HomeComponent = ({ }) => {
+    return (<View><Text>home</Text></View>)
+
 }
 
-export default Test;
-
-
-
+export default HomeComponent

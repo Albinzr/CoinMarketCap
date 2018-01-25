@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Image, StyleSheet } from 'react-native'
-import { Icon } from 'native-base';
+
 
 export const HomeIcon = (props) => {
     var imageURI = props.focused

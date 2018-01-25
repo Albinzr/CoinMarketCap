@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, FlatList, Image, Text, TouchableOpacity, Platform, RefreshControl } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, FlatList, Image, Text, TouchableOpacity, Platform, RefreshControl } from 'react-native'
 //
 import colors from '../../../colors/colors'
 import apiManager from '../../api/apiManager'
@@ -10,6 +10,8 @@ export default class ListComponent extends Component {
     constructor(props) {
         super(props)
         this.callLoadMore = this.callLoadMore.bind(this)
+        this.scrollToTop = this.scrollToTop.bind(this)
+        this.flatlistRef = null
     }
 
     getFavIcon(coinSymbol) {
@@ -20,7 +22,9 @@ export default class ListComponent extends Component {
             return require("../../assets/images/bookmark2.png")
         }
     }
-
+    scrollToTop() {
+        this.flatlistref.scrollToOffset({ y: 0, animated: true });
+    }
     indicatorIcon(value) {
 
         if (value !== null && value !== undefined && value.charAt(0) === '-') {
@@ -46,22 +50,33 @@ export default class ListComponent extends Component {
     }
 
     render() {
-
         const { isRefreshing,
             refresh, coins,
             onSelect,
             addOrRemoveFavourite,
             getFavCoins,
-            } = this.props;
+            shouldScrollToTop
+        } = this.props;
+        let listLoader = null
+        if (Object.keys(coins).length > 50) {
+            listLoader = <ActivityIndicator style={{ padding: 30 }} size="large" color="gray" />
+        }
+
         return (
             <View style={styles.container}>
-
+                {shouldScrollToTop ? this.scrollToTop() : null}
                 <FlatList refreshControl={
                     <RefreshControl
                         refreshing={isRefreshing}
                         onRefresh={refresh}
                     />
                 }
+                    test={() => {
+
+                        this.scrollToTop()
+                    }}
+                    scrollToIndex={10}
+                    ref={(ref) => this.flatlistref = ref}
                     bounces={false}
                     keyExtractor={(item, index) => item.id}
                     data={coins}
@@ -71,6 +86,8 @@ export default class ListComponent extends Component {
                     windowSize={50}
                     onEndThreshold={100}
                     onEndReached={this.callLoadMore}
+                    scrollToIndex={0}
+                    ListFooterComponent={() => listLoader}
                     renderItem={({ item }) =>
                         <TouchableOpacity onPress={() => {
                             onSelect(item.id, item.symbol)

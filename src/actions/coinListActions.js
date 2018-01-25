@@ -1,5 +1,7 @@
 import apiManager from '../api/apiManager'
+import sort from '../constants/sortConstant'
 //
+
 export const loadAllCoinNames = () => {
     return dispatch => new Promise(async (resolve, reject) => {
         apiManager.getAllCoinNames().then(data => {
@@ -9,6 +11,107 @@ export const loadAllCoinNames = () => {
             }))
         })
     })
+}
+export const sortToggle = (showSortOptions) => {
+    return dispatch => new Promise(async (resolve, reject) => {
+        resolve(dispatch({
+            type: 'COIN_LIST_SORT',
+            data: { showSortOptions: !(showSortOptions) },
+        }))
+    })
+}
+
+// export const sort = () => {
+//     return dispatch => new Promise(async (resolve, reject) => {
+//         data.sort(function compare(a, b) {
+//             if (a.percent_change_24h < b.percent_change_24h) {
+//                 return -1;
+//             }
+//             if (a.percent_change_24h > b.percent_change_24h) {
+//                 return 1;
+//             }
+//             // a must be equal to b
+//             return 0;
+//         })
+//     })
+// }
+
+const sorter = (data, filter) => {
+    switch (filter) {
+
+        case sort.rank:
+            return parseFloat(data.rank)
+            break;
+        case sort.name:
+            return data.name
+            break;
+        case sort.marketCap:
+            return parseFloat(data.market_cap_usd ? data.market_cap_usd : -999)
+            break;
+        case sort.volume:
+            return parseFloat(data["24h_volume_usd"] ? data["24h_volume_usd"] : -999)
+            break;
+        case sort.change:
+            return parseFloat(data.percent_change_1h ? data.percent_change_1h : -999)
+            break;
+        case sort.topLoser:
+            return parseFloat(data.percent_change_24h ? data.percent_change_24h : 999)
+            break;
+        case sort.topGain:
+            return parseFloat(data.percent_change_24h ? data.percent_change_24h : -999)
+            break;
+        case sort.price:
+            return parseFloat(data.price_usd ? data.price_usd : -999)
+            break;
+
+        default:
+            return parseFloat(data.rank)
+            break;
+    }
+
+    // if (filter === sortkeys.topGain) {
+    //     coinsDetails = coinsDetails.reverse()
+    // }
+}
+
+export const goToTop = () => {
+    return dispatch => new Promise(async (resolve, reject) => {
+        return resolve(dispatch({
+            type: 'COIN_LIST_SCROLL_TO_TOP',
+            data: {
+                shouldScrollToTop: true,
+            },
+        }))
+    })
+};
+
+
+export const sortCoins = (coinsDetails, filter) => {
+    return dispatch => new Promise(async (resolve, reject) => {
+        coinsDetails = coinsDetails.sort(compare = (data1, data2) => {
+
+            if (sorter(data1, filter) < sorter(data2, filter)) {
+                return -1;
+            }
+            if (sorter(data1, filter) > sorter(data2, filter)) {
+                return 1;
+            }
+            return 0;
+        })
+        if (filter === sort.topGai || filter === sort.marketCap || filter === sort.volume || filter === sort.change || filter === sort.price) {
+            coinsDetails = coinsDetails.reverse()
+        }
+        return resolve(dispatch({
+            type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
+            data: {
+                coinsDetails: coinsDetails,
+                sort: filter,
+                isRefreshing: false,
+                shouldScrollToTop: false
+            },
+        }))
+    })
+
 }
 
 export const closeSearch = () => {
@@ -38,7 +141,8 @@ export const searchFilter = (key, coinNames, showSearch = true) => {
     })
 }
 
-export const getCoins = (start, limit, coinsDetails, loadMore = true, isRefreshing = false, currency = "USD") => {
+export const getCoins = (start, limit, coinsDetails, loadMore = true, isRefreshing = false, currency = "USD", filter = sort.rank) => {
+    // alert(filter)
     return dispatch => new Promise(async (resolve, reject) => {
         if (isRefreshing) {
             resolve(dispatch({
@@ -59,14 +163,27 @@ export const getCoins = (start, limit, coinsDetails, loadMore = true, isRefreshi
                 },
             }))
             apiManager.getCoins(start, limit, currency).then(data => {
+                if (filter !== sort.rank) {
+                    data = data.sort(compare = (data1, data2) => {
+                        if (sorter(data1, filter) < sorter(data2, filter)) {
+                            return -1;
+                        }
+                        if (sorter(data1, filter) > sorter(data2, filter)) {
+                            return 1;
+                        }
+                        return 0;
+                    })
+                }
+
                 if (data.length == limit) {
                     return resolve(dispatch({
                         type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
                         data: {
-                            coinsDetails: coinsDetails.concat(data),
+                            coinsDetails: data,
                             loadMore: true,
                             start: start + limit,
-                            isRefreshing: false
+                            isRefreshing: false,
+                            sort: filter
                         },
                     }))
 
@@ -77,7 +194,8 @@ export const getCoins = (start, limit, coinsDetails, loadMore = true, isRefreshi
                             coinsDetails: coinsDetails.concat(data),
                             loadMore: false,
                             start: start,
-                            isRefreshing: false
+                            isRefreshing: false,
+                            sort: filter
                         },
                     }))
 
