@@ -97,7 +97,6 @@ export default function userReducer(state = initialState, action) {
             }
             return initialState;
         }
-
         case 'COIN_LIST_RECIVED_COIN_DETAILS_DATA': {
             if (action.data) {
                 return {

@@ -71,10 +71,6 @@ export default class ListComponent extends Component {
                         onRefresh={refresh}
                     />
                 }
-                    test={() => {
-
-                        this.scrollToTop()
-                    }}
                     scrollToIndex={10}
                     ref={(ref) => this.flatlistref = ref}
                     bounces={false}
@@ -87,7 +83,7 @@ export default class ListComponent extends Component {
                     onEndThreshold={100}
                     onEndReached={this.callLoadMore}
                     scrollToIndex={0}
-                    ListFooterComponent={() => listLoader}
+                    ListFooterComponent={listLoader}
                     renderItem={({ item }) =>
                         <TouchableOpacity onPress={() => {
                             onSelect(item.id, item.symbol)

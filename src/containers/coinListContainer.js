@@ -19,18 +19,16 @@ class CoinListContainer extends Component {
 
         this.goToCoinDetailsScreen = this.goToCoinDetailsScreen.bind(this)
         this.sortButton = this.sortButton.bind(this)
+        // this.sideBarToggle = this.sideBarToggle.bind(this)
     }
 
     static right = (props) => {
         return (
-            <TouchableOpacity onPress={() => {
-                props.sortButton()
-            }}>
+            <TouchableOpacity onPress={() => props.sortButton()}>
                 <Image source={require('../assets/images/sort.png')} style={{ width: 24, height: 24, marginRight: 25, }} />
             </TouchableOpacity >
         );
     }
-
     sortButton() {
         this.props.sortToggle(this.props.showSortOptions)
     }
@@ -44,10 +42,10 @@ class CoinListContainer extends Component {
 
     componentDidMount() {
         Actions.refresh({ title: '                 Home' })
+
         this.props.navigation.setParams({
             sortButton: this.sortButton
         })
-
         const {
             getCoins,
             coinsDetails,
@@ -63,6 +61,7 @@ class CoinListContainer extends Component {
         setTimeout(() => {
             getCoins(0, 10000, coinsDetails, loadMore, false, "USD", this.props.sort)
         }, timerIntervel);
+
     }
 
 

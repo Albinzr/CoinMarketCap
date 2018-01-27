@@ -39,12 +39,10 @@ const PopupList = ({ design,
                             style={styles.list}
                             data={sortTypes}
                             renderItem={({ item }) => <TouchableOpacity onPress={() => {
+                                sortToggle(showSortOptions)
                                 goToTop().then(data => {
                                     sortCoins(coinsDetails, item)
-                                    sortToggle(showSortOptions)
                                 })
-
-
                             }}>
                                 <Text style={styles.label}>{item.toUpperCase()}</Text></TouchableOpacity>}
                         />

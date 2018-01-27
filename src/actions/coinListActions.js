@@ -21,20 +21,6 @@ export const sortToggle = (showSortOptions) => {
     })
 }
 
-// export const sort = () => {
-//     return dispatch => new Promise(async (resolve, reject) => {
-//         data.sort(function compare(a, b) {
-//             if (a.percent_change_24h < b.percent_change_24h) {
-//                 return -1;
-//             }
-//             if (a.percent_change_24h > b.percent_change_24h) {
-//                 return 1;
-//             }
-//             // a must be equal to b
-//             return 0;
-//         })
-//     })
-// }
 
 const sorter = (data, filter) => {
     switch (filter) {
@@ -88,7 +74,7 @@ export const goToTop = () => {
 
 export const sortCoins = (coinsDetails, filter) => {
     return dispatch => new Promise(async (resolve, reject) => {
-        coinsDetails = coinsDetails.sort(compare = (data1, data2) => {
+        let coins = coinsDetails.sort(compare = (data1, data2) => {
 
             if (sorter(data1, filter) < sorter(data2, filter)) {
                 return -1;
@@ -98,18 +84,20 @@ export const sortCoins = (coinsDetails, filter) => {
             }
             return 0;
         })
-        if (filter === sort.topGai || filter === sort.marketCap || filter === sort.volume || filter === sort.change || filter === sort.price) {
-            coinsDetails = coinsDetails.reverse()
+        if (filter === sort.topGain || filter === sort.marketCap || filter === sort.volume || filter === sort.change || filter === sort.price) {
+            coins = coins.reverse()
         }
         return resolve(dispatch({
             type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
             data: {
-                coinsDetails: coinsDetails,
+                coinsDetails: coins,
                 sort: filter,
                 isRefreshing: false,
                 shouldScrollToTop: false
             },
         }))
+
+
     })
 
 }

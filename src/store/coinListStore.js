@@ -11,5 +11,6 @@ export default {
     favCoins: [],
     sort: "rank",
     showSortOptions: false,
-    shouldScrollToTop: false
+    shouldScrollToTop: false,
+    sortedCoinsDetails: []
 };
