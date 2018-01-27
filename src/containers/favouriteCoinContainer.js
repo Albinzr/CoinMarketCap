@@ -32,9 +32,13 @@ class FavouriteCoinContainer extends Component {
 
     componentDidMount() {
         // this.getCoins()
-        this.props.getFavCoins().then(data => {
-            this.props.getSelectedFavCoin(data.data.favCoins)
-        })
+        const { coinsDetails, getFavCoins } = this.props
+        if (Object.keys(coinsDetails).length > 0) {
+            getFavCoins(coinsDetails)
+        }
+        // this.props.getFavCoins().then(data => {
+        //     this.props.getSelectedFavCoin(data.data.favCoins)
+        // })
     }
 
     static onEnter = () => {

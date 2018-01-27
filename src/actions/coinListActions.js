@@ -1,6 +1,8 @@
 import apiManager from '../api/apiManager'
+import database from '../database/database'
 import sort from '../constants/sortConstant'
 //
+let db = database.new("favourite")
 
 export const loadAllCoinNames = () => {
     return dispatch => new Promise(async (resolve, reject) => {
@@ -156,16 +158,45 @@ export const getCoins = (isRefreshing = false, currency = "USD", filter = sort.r
                     }
                     return 0;
                 })
+
             }
-            return resolve(dispatch({
-                type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
-                data: {
-                    coinsDetails: coinsDetails,
-                    isRefreshing: false,
-                    isLoading: true,
-                    sort: filter
-                },
-            }))
+            return coinsDetails
+
+        }).then(coinsDetails => {
+            findFavouriteCoins(coinsDetails).then(favouriteCoinTaged => {
+                debugger
+                return resolve(dispatch({
+                    type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
+                    data: {
+                        coinsDetails: favouriteCoinTaged,
+                        isRefreshing: false,
+                        isLoading: false,
+                        sort: filter
+                    },
+                }))
+            })
+        })
+    })
+}
+
+export const updateCoinDetails
+
+const findFavouriteCoins = (coinsDetails) => {
+    return new Promise(async (resolve, reject) => {
+        database.getAllData(db).then(coins => {
+            if (coins.total_rows > 0) {
+                var favouriteCoinArray = coins.rows.map(favCoin => favCoin.key)
+                if (coinsDetails !== undefined) {
+                    coinsDetails.forEach((data) => {
+                        if (favouriteCoinArray.includes(data.symbol)) {
+                            data["favourite"] = true
+                        }
+                    })
+                }
+                return resolve(coinsDetails)
+            } else {
+                return resolve(coinsDetails)
+            }
         })
     })
 }

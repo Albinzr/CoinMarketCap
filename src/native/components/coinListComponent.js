@@ -36,7 +36,9 @@ const CoinListComponent = ({
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor='#f1f1f3' Translucent={false} barStyle='dark-content' />
-            {isLoading ? <Loader /> : null}
+            {
+                 isLoading ? <Loader /> : null
+                 }
             {showSortOptions ? <SortMenu
                 showSortOptions={showSortOptions}
                 sortTypes={sortTypes}

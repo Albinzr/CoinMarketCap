@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 //
 import { loadAllCoinNames, closeSearch, searchFilter, getCoins, sortCoins, sortToggle, goToTop } from '../actions/coinListActions';
-import { getFavCoins, addOrRemoveFavourite } from '../actions/favouriteCoinActions'
+import { addOrRemoveFavourite } from '../actions/favouriteCoinActions'
 import sort from '../constants/sortConstant'
 //
 const timerIntervel = 60000
@@ -63,7 +63,6 @@ class CoinListContainer extends Component {
             closeSearch,
             coinsDetails,
             favCoins,
-            getFavCoins,
             addOrRemoveFavourite,
             getCoins,
             isRefreshing,
@@ -81,7 +80,7 @@ class CoinListContainer extends Component {
                 closeSearch={closeSearch}
                 coinsDetails={coinsDetails}
                 favCoins={favCoins}
-                getFavCoins={getFavCoins}
+
                 addOrRemoveFavourite={addOrRemoveFavourite}
                 getCoins={getCoins}
                 isRefreshing={isRefreshing}
@@ -103,13 +102,12 @@ class CoinListContainer extends Component {
 const mapStateToProps = state =>
     ({
         ...state.coinListReducer || {},
-        ...state.favouritCoinReducer || {}
     });
 
 
 const mapDispatchToProps = {
     loadAllCoinNames, closeSearch, searchFilter, getCoins, sortCoins, sortToggle, goToTop,
-    getFavCoins, addOrRemoveFavourite
+     addOrRemoveFavourite
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoinListContainer);

@@ -14,10 +14,9 @@ export default class ListComponent extends Component {
         this.flatlistRef = null
     }
 
-    getFavIcon(coinSymbol) {
-        let coins = this.props.favCoins
-        console.log(coins)
-        if (coins.includes(coinSymbol)) {
+    getFavIcon(favourite = false) {
+        debugger
+        if (favourite) {
             return require("../../assets/images/bookmark1.png")
         } else {
             return require("../../assets/images/bookmark2.png")
@@ -44,10 +43,10 @@ export default class ListComponent extends Component {
     }
 
     callLoadMore() {
-        this.props.loadMore()
+        // this.props.loadMore()
     }
     componentDidMount = () => {
-        this.props.getFavCoins()
+        // this.props.getFavCoins()
     }
 
     render() {
@@ -55,7 +54,7 @@ export default class ListComponent extends Component {
             refresh, coins,
             onSelect,
             addOrRemoveFavourite,
-            getFavCoins,
+            // getFavCoins,
             shouldScrollToTop
         } = this.props;
         let listLoader = null
@@ -85,7 +84,7 @@ export default class ListComponent extends Component {
                     onEndReached={this.callLoadMore}
                     scrollToIndex={0}
                     ListFooterComponent={listLoader}
-                    renderItem={({ item }) =>
+                    renderItem={({ index,item }) =>
                         <TouchableOpacity onPress={() => {
                             onSelect(item.id, item.symbol)
                         }
@@ -105,16 +104,21 @@ export default class ListComponent extends Component {
                                         style={styles.indicatorIcon}
                                         source={this.indicatorIcon(item.percent_change_24h)} /></Text>
                                     <TouchableOpacity onPress={() => {
-                                        debugger
-                                        addOrRemoveFavourite(item.symbol).then(data => {
-                                            console.info(data);
+                                        alert(index)
+                                        if(item.favourite === undefined || item.favourite === false){
+                                            item["favourite"] = true 
+                                        }else{
+                                            item["favourite"] = false 
+                                        }
+                                        // addOrRemoveFavourite(item.symbol).then(data => {
+                                        //     console.info(data);
 
-                                        })
-                                        getFavCoins()
+                                        // })
+                                        // getFavCoins()
                                     }}>
                                         <Image
                                             style={{ resizeMode: 'contain', alignSelf: 'center', width: 24, height: 24, padding: 0, margin: 0 }}
-                                            source={this.getFavIcon(item.symbol)} />
+                                            source={this.getFavIcon(item.favourite)} />
                                     </TouchableOpacity>
                                 </View>
                             </View>

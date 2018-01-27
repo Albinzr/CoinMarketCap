@@ -3,7 +3,7 @@ import apiManager from '../api/apiManager'
 import database from '../database/database'
 let db = database.new("favourite")
 
-export const getFavCoins = () => {
+export const getFavCoins = (coinDetails) => {
     return dispatch => new Promise(async (resolve, reject) => {
         dispatch({
             type: 'FAVOURITE_COIN_LOADING',
@@ -13,10 +13,16 @@ export const getFavCoins = () => {
         })
         database.getAllData(db).then(coins => {
             if (coins.total_rows > 0) {
-                var favCoinArray = []
-                coins.rows.forEach(data => {
-                    favCoinArray.push(data.id)
-                })
+                var favCoinArray = coins.rows.map(favCoin => favCoin.key)
+                if (coinDetails !== undefined) {
+                    coinDetails.forEach((data) => {
+                        if (favCoinArray.includes(data.symbol)) {
+                            data["favourit"] = true
+                            console.log(data, coinDetails)
+                        }
+                    })
+                }
+
                 resolve(dispatch({
                     type: 'FAVOURITE_COIN_RECIVED_DATA',
                     data: {
