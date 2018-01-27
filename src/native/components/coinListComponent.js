@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, StatusBar, Dimensions } from 'react-native'
 //
 import apiManager from '../../api/apiManager'
 import colors from '../../../colors/colors'
@@ -7,6 +7,9 @@ import colors from '../../../colors/colors'
 import SearchBar from '../components/searchComponent'
 import List from '../components/listComponent'
 import SortMenu from './popupList'
+import Loader from './loaderComponent'
+//
+var { height, width } = Dimensions.get('window')
 
 const CoinListComponent = ({
     searchFilter,
@@ -18,25 +21,22 @@ const CoinListComponent = ({
     getFavCoins,
     addOrRemoveFavourite,
     getCoins,
-    start,
-    limit,
-    loadMore,
     goToCoinDetailsScreen,
     isRefreshing,
     searchArray,
-    width,
     showSortOptions,
     sortTypes,
     sortToggle,
     sortCoins,
     shouldScrollToTop,
-    goToTop
+    goToTop,
+    isLoading
 }) => {
 
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor='#f1f1f3' Translucent={false} barStyle='dark-content' />
-
+            {isLoading ? <Loader /> : null}
             {showSortOptions ? <SortMenu
                 showSortOptions={showSortOptions}
                 sortTypes={sortTypes}
@@ -54,12 +54,12 @@ const CoinListComponent = ({
                 getFavCoins={getFavCoins}
                 addOrRemoveFavourite={addOrRemoveFavourite}
                 loadMore={() => {
-                    getCoins(start, limit, coinsDetails, loadMore)
+                    getCoins()
                 }}
                 onSelect={goToCoinDetailsScreen}
                 isRefreshing={isRefreshing}
                 refresh={() => {
-                    getCoins(0, limit, [], true, true)
+                    getCoins(true)
                 }}
                 shouldScrollToTop={shouldScrollToTop}
             />

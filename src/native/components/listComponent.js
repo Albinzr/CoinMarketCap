@@ -16,6 +16,7 @@ export default class ListComponent extends Component {
 
     getFavIcon(coinSymbol) {
         let coins = this.props.favCoins
+        console.log(coins)
         if (coins.includes(coinSymbol)) {
             return require("../../assets/images/bookmark1.png")
         } else {
@@ -93,7 +94,7 @@ export default class ListComponent extends Component {
                                 <View style={styles.coinContainer} >
                                     <Image style={styles.coinImage} source={{ uri: apiManager.getCoinIcon(item.id) }} resizeMode="cover" />
                                     <View style={styles.coinNameContainer}>
-                                        <Text style={styles.coinHeader}>{`${item.symbol}`.toUpperCase()}</Text>
+                                        <Text style={styles.coinHeader}>{item.symbol.toUpperCase()}</Text>
                                         <Text style={styles.coinSubHeader}>{item.name}</Text>
                                     </View>
                                 </View>
@@ -104,9 +105,12 @@ export default class ListComponent extends Component {
                                         style={styles.indicatorIcon}
                                         source={this.indicatorIcon(item.percent_change_24h)} /></Text>
                                     <TouchableOpacity onPress={() => {
+                                        debugger
                                         addOrRemoveFavourite(item.symbol).then(data => {
-                                            getFavCoins()
+                                            console.info(data);
+
                                         })
+                                        getFavCoins()
                                     }}>
                                         <Image
                                             style={{ resizeMode: 'contain', alignSelf: 'center', width: 24, height: 24, padding: 0, margin: 0 }}

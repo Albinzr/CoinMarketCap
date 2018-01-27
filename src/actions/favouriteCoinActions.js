@@ -5,12 +5,12 @@ let db = database.new("favourite")
 
 export const getFavCoins = () => {
     return dispatch => new Promise(async (resolve, reject) => {
-        resolve(dispatch({
+        dispatch({
             type: 'FAVOURITE_COIN_LOADING',
             data: {
                 isLoading: true,
             },
-        }))
+        })
         database.getAllData(db).then(coins => {
             if (coins.total_rows > 0) {
                 var favCoinArray = []
@@ -59,64 +59,49 @@ export const addOrRemoveFavourite = (coinSymbol) => {
 }
 
 
-export const getCoins = (isRefreshing = false, currency = "USD") => {
+export const getSelectedFavCoin = (favIcons, isRefreshing = false, currency = "USD") => {
     return dispatch => new Promise(async (resolve, reject) => {
-        resolve(dispatch({
+        dispatch({
             type: 'FAVOURITE_COIN_LOADING',
             data: {
                 isLoading: true,
             },
-        }))
-        database.getAllData(db).then(coins => {
-            if (coins.total_rows > 0) {
-                var favCoinArray = []
-                coins.rows.forEach(data => {
-                    favCoinArray.push(data.id)
-                })
-                return favCoinArray
-            } else {
-                return []
-            }
-
-        }).then(coinList => {
-            if (coinList.length > 0) {
-                apiManager.getCoins(0, 10000, "USD").then(coinDetails => {
-                    var favCoinDetailsArray = []
-                    coinDetails.forEach(coin => {
-                        if (coinList.includes(coin.symbol)) {
-                            favCoinDetailsArray.push(coin)
-                        }
-                    })
-                    return favCoinDetailsArray
-                }).then(coinArray => {
-                    resolve(dispatch({
-                        type: 'SELECTED_FAVOURITE_COIN_DETAIL_DATA',
-                        data: {
-                            selectedFavCoins: coinArray,
-                            isLoading: false
-                        },
-                    }))
-                })
-            } else {
-                // Show no fav screen
-                resolve(dispatch({
-                    type: 'FAVOURITE_COIN_LOADING',
-                    data: {
-                        isLoading: false,
-                    },
-                }))
-            }
         })
-            .catch(favCoinError => {
-                // console.log(favCoinError, "cannot get fav coin")
+        if (favIcons.length > 0) {
+            apiManager.getCoins(0, 10000, "USD").then(coinDetails => {
+                var favCoinDetailsArray = []
+                coinDetails.forEach(coin => {
+                    if (favIcons.includes(coin.symbol)) {
+                        favCoinDetailsArray.push(coin)
+                    }
+                })
+                return favCoinDetailsArray
+            }).then(coinArray => {
                 resolve(dispatch({
-                    type: 'FAVOURITE_COIN_LOADING',
+                    type: 'SELECTED_FAVOURITE_COIN_DETAIL_DATA',
                     data: {
-                        isLoading: false,
+                        selectedFavCoins: coinArray,
+                        isLoading: false
                     },
                 }))
             })
+        } else {
+            // Show no fav screen
+            resolve(dispatch({
+                type: 'FAVOURITE_COIN_LOADING',
+                data: {
+                    isLoading: false,
+                },
+            }))
+        }
     })
-
-
+        .catch(favCoinError => {
+            // console.log(favCoinError, "cannot get fav coin")
+            resolve(dispatch({
+                type: 'FAVOURITE_COIN_LOADING',
+                data: {
+                    isLoading: false,
+                },
+            }))
+        })
 }

@@ -32,7 +32,7 @@ const Index = (
         <Scene hideNavBar titleStyle={{ alignSelf: 'center' }} >
             <Scene key="drawer" drawer contentComponent={Sidebar} initial drawerPosition="left" drawerWidth={300} drawerIcon={<Image source={require('../../assets/images/menu.png')} style={{ width: 24, height: 24, marginRight: 25, }} />}>
                 <Tabs
-
+                    lazy
                     key="tabbar"
                     swipeEnabled
                     type="replace"

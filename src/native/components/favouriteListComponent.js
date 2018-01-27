@@ -11,13 +11,12 @@ const FavouriteListComponent = ({
     addOrRemoveFavourite,
     goToCoinDetailsScreen,
     isRefreshing,
-    getCoins,
+    // getCoins,
     isLoading
   }) => {
     return (
         <View style={styles.container}>
             {isLoading ? <Loader /> : null}
-
             <StatusBar backgroundColor='#f1f1f3' Translucent={false} barStyle='dark-content' />
             <List coins={selectedFavCoins}
                 favCoins={favCoins}
@@ -29,7 +28,7 @@ const FavouriteListComponent = ({
                 onSelect={goToCoinDetailsScreen}
                 isRefreshing={isRefreshing}
                 refresh={() => {
-                    getCoins(true)
+                    // getCoins(true)
                 }}
             />
         </View >

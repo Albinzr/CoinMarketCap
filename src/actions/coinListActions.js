@@ -55,9 +55,6 @@ const sorter = (data, filter) => {
             break;
     }
 
-    // if (filter === sortkeys.topGain) {
-    //     coinsDetails = coinsDetails.reverse()
-    // }
 }
 
 export const goToTop = () => {
@@ -93,7 +90,6 @@ export const sortCoins = (coinsDetails, filter) => {
                 coinsDetails: coins,
                 sort: filter,
                 isRefreshing: false,
-                shouldScrollToTop: false
             },
         }))
 
@@ -112,10 +108,10 @@ export const closeSearch = () => {
 export const searchFilter = (key, coinNames, showSearch = true) => {
     return dispatch => new Promise(async (resolve, reject) => {
         if (!showSearch) {
-            resolve(dispatch({
+            dispatch({
                 type: 'COIN_LIST_OPEN_SEARCH',
                 data: { showSearch: true },
-            }))
+            })
         }
         const searchArray = coinNames.filter(function (item) {
             const itemData = item.name.toUpperCase()
@@ -129,67 +125,47 @@ export const searchFilter = (key, coinNames, showSearch = true) => {
     })
 }
 
-export const getCoins = (start, limit, coinsDetails, loadMore = true, isRefreshing = false, currency = "USD", filter = sort.rank) => {
-    // alert(filter)
+export const getCoins = (isRefreshing = false, currency = "USD", filter = sort.rank) => {
     return dispatch => new Promise(async (resolve, reject) => {
         if (isRefreshing) {
-            resolve(dispatch({
+            dispatch({
                 type: 'COIN_LIST_LOADING',
                 data: {
-                    isRefreshing: true
+                    isRefreshing: true,
+                    isLoading: false
                 },
-            }))
-            loadMore = true
-            coinsDetails = []
-        }
-        if (loadMore) {
-            resolve(dispatch({
-                type: 'COIN_LIST_LOADING',
-                data: {
-                    loadMore: false,
-                    isRefreshing: true
-                },
-            }))
-            apiManager.getCoins(start, limit, currency).then(data => {
-                if (filter !== sort.rank) {
-                    data = data.sort(compare = (data1, data2) => {
-                        if (sorter(data1, filter) < sorter(data2, filter)) {
-                            return -1;
-                        }
-                        if (sorter(data1, filter) > sorter(data2, filter)) {
-                            return 1;
-                        }
-                        return 0;
-                    })
-                }
-
-                if (data.length == limit) {
-                    return resolve(dispatch({
-                        type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
-                        data: {
-                            coinsDetails: data,
-                            loadMore: true,
-                            start: start + limit,
-                            isRefreshing: false,
-                            sort: filter
-                        },
-                    }))
-
-                } else {
-                    resolve(dispatch({
-                        type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
-                        data: {
-                            coinsDetails: coinsDetails.concat(data),
-                            loadMore: false,
-                            start: start,
-                            isRefreshing: false,
-                            sort: filter
-                        },
-                    }))
-
-                }
             })
-            return
+        } else {
+            dispatch({
+                type: 'COIN_LIST_LOADING',
+                data: {
+                    isRefreshing: false,
+                    isLoading: true
+                },
+            })
         }
+
+        apiManager.getCoins(0, 10000, currency).then(coinsDetails => {
+            if (filter !== sort.rank) {
+                coinsDetails = coinsDetails.sort(compare = (data1, data2) => {
+                    if (sorter(data1, filter) < sorter(data2, filter)) {
+                        return -1;
+                    }
+                    if (sorter(data1, filter) > sorter(data2, filter)) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            }
+            return resolve(dispatch({
+                type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
+                data: {
+                    coinsDetails: coinsDetails,
+                    isRefreshing: false,
+                    isLoading: true,
+                    sort: filter
+                },
+            }))
+        })
     })
 }

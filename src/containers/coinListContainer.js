@@ -42,26 +42,15 @@ class CoinListContainer extends Component {
 
     componentDidMount() {
         Actions.refresh({ title: '                 Home' })
-
         this.props.navigation.setParams({
             sortButton: this.sortButton
         })
-        const {
-            getCoins,
-            coinsDetails,
-            start,
-            limit,
-            loadMore,
-            loadAllCoinNames,
-            sort
-             } = this.props;
-
-        getCoins(0, 10000, coinsDetails, loadMore, false, "USD", sort)
         loadAllCoinNames()
+        const { getCoins, sort } = this.props;
+        getCoins(false, "USD", sort)
         setTimeout(() => {
-            getCoins(0, 10000, coinsDetails, loadMore, false, "USD", this.props.sort)
+            getCoins(false, "USD", this.props.sort)
         }, timerIntervel);
-
     }
 
 
@@ -77,13 +66,14 @@ class CoinListContainer extends Component {
             getFavCoins,
             addOrRemoveFavourite,
             getCoins,
-            start,
-            limit,
-            loadMore,
             isRefreshing,
             showSortOptions,
-            searchArray, sortToggle, sortCoins,
-            shouldScrollToTop, goToTop } = this.props;
+            searchArray,
+            sortToggle,
+            sortCoins,
+            shouldScrollToTop,
+            goToTop,
+            isLoading } = this.props;
         return (
             <Layout searchFilter={searchFilter}
                 coinNames={coinNames}
@@ -94,9 +84,6 @@ class CoinListContainer extends Component {
                 getFavCoins={getFavCoins}
                 addOrRemoveFavourite={addOrRemoveFavourite}
                 getCoins={getCoins}
-                start={start}
-                limit={limit}
-                loadMore={loadMore}
                 isRefreshing={isRefreshing}
                 searchArray={searchArray}
                 goToCoinDetailsScreen={this.goToCoinDetailsScreen}
@@ -106,6 +93,7 @@ class CoinListContainer extends Component {
                 sortCoins={sortCoins}
                 shouldScrollToTop={shouldScrollToTop}
                 goToTop={goToTop}
+                isLoading={isLoading}
             />
         )
 

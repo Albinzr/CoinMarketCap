@@ -2,9 +2,22 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Actions } from "react-native-router-flux";
 //
-import { getFavCoins, addOrRemoveFavourite, getCoins } from '../actions/favouriteCoinActions'
+import { getFavCoins, addOrRemoveFavourite, getSelectedFavCoin } from '../actions/favouriteCoinActions'
 //
 class FavouriteCoinContainer extends Component {
+    // getFavCoins = () => {
+    //     database.getAllData(db).then(coins => {
+    //         if (coins.total_rows > 0) {
+    //             var favCoinArray = []
+    //             coins.rows.forEach(data => {
+    //                 favCoinArray.push(data.id)
+    //             })
+    //             return favCoinArray
+    //         } else {
+    //             return []
+    //         }
+    //     })
+    // }
 
     goToCoinDetailsScreen(coinName, coinSymbol) {
         Actions.CoinDetailScreen({
@@ -13,12 +26,15 @@ class FavouriteCoinContainer extends Component {
         })
     }
 
-    getCoins() {
-        this.props.getCoins()
-    }
+    // getCoins() {
+    //     this.props.getCoins()
+    // }
 
     componentDidMount() {
-        this.getCoins()
+        // this.getCoins()
+        this.props.getFavCoins().then(data => {
+            this.props.getSelectedFavCoin(data.data.favCoins)
+        })
     }
 
     static onEnter = () => {
@@ -29,7 +45,9 @@ class FavouriteCoinContainer extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.enterTime !== nextProps.enterTime) {
-            this.getCoins()
+            this.props.getFavCoins().then(data => {
+                this.props.getSelectedFavCoin(data.data.favCoins)
+            })
         }
     }
 
@@ -41,10 +59,9 @@ class FavouriteCoinContainer extends Component {
             getFavCoins,
             addOrRemoveFavourite,
             isRefreshing,
-            getCoins,
+            coinsDetails,
             isLoading
         } = this.props;
-
         return <Layout
             selectedFavCoins={selectedFavCoins}
             favCoins={favCoins}
@@ -52,7 +69,6 @@ class FavouriteCoinContainer extends Component {
             addOrRemoveFavourite={addOrRemoveFavourite}
             goToCoinDetailsScreen={this.goToCoinDetailsScreen}
             isRefreshing={isRefreshing}
-            getCoins={getCoins}
             isLoading={isLoading}
         />
 
@@ -61,6 +77,7 @@ class FavouriteCoinContainer extends Component {
 
 const mapStateToProps = state =>
     ({
+        ...state.coinListReducer || {},
         ...state.favouritCoinReducer || {},
 
     });
@@ -68,7 +85,7 @@ const mapStateToProps = state =>
 const mapDispatchToProps = {
     getFavCoins,
     addOrRemoveFavourite,
-    getCoins
+    getSelectedFavCoin
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavouriteCoinContainer);
