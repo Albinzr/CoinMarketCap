@@ -15,7 +15,6 @@ export default class ListComponent extends Component {
     }
 
     getFavIcon(favourite = false) {
-        debugger
         if (favourite) {
             return require("../../assets/images/bookmark1.png")
         } else {
@@ -54,8 +53,9 @@ export default class ListComponent extends Component {
             refresh, coins,
             onSelect,
             addOrRemoveFavourite,
-            // getFavCoins,
-            shouldScrollToTop
+            updateCoinsDetails,
+            shouldScrollToTop,
+            orginalCoinsDetails
         } = this.props;
         let listLoader = null
         if (Object.keys(coins).length > 50) {
@@ -84,7 +84,7 @@ export default class ListComponent extends Component {
                     onEndReached={this.callLoadMore}
                     scrollToIndex={0}
                     ListFooterComponent={listLoader}
-                    renderItem={({ index,item }) =>
+                    renderItem={({ index, item }) =>
                         <TouchableOpacity onPress={() => {
                             onSelect(item.id, item.symbol)
                         }
@@ -104,17 +104,28 @@ export default class ListComponent extends Component {
                                         style={styles.indicatorIcon}
                                         source={this.indicatorIcon(item.percent_change_24h)} /></Text>
                                     <TouchableOpacity onPress={() => {
-                                        alert(index)
-                                        if(item.favourite === undefined || item.favourite === false){
-                                            item["favourite"] = true 
-                                        }else{
-                                            item["favourite"] = false 
-                                        }
-                                        // addOrRemoveFavourite(item.symbol).then(data => {
-                                        //     console.info(data);
 
-                                        // })
-                                        // getFavCoins()
+                                        let coinArray = Object.assign([], orginalCoinsDetails)
+
+                                        coinArray.forEach(coin => {
+                                            if (item.symbol === coin.symbol) {
+
+                                                if (item.favourite === undefined || item.favourite === false) {
+                                                    coin["favourite"] = true
+
+                                                } else {
+                                                    coin["favourite"] = false
+                                                }
+                                            }
+                                        })
+
+                                        updateCoinsDetails(coinArray).then(none => {
+                                            addOrRemoveFavourite(item.symbol).then(none => {
+                                                console.log(none)
+                                            })
+                                        })
+
+
                                     }}>
                                         <Image
                                             style={{ resizeMode: 'contain', alignSelf: 'center', width: 24, height: 24, padding: 0, margin: 0 }}

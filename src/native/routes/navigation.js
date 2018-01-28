@@ -15,7 +15,7 @@ import CoinDetailsContainer from '../../containers/coinDetailContainer'
 import CoinDetailComponent from '../components/coinDetailComponent'
 //
 import FavouriteCoinContainer from '../../containers/favouriteCoinContainer'
-import FavouriteListComponent from '../components/favouriteListComponent'
+
 //
 import ProfileContainer from '../../containers/profileContainer';
 import ProfileComponent from '../components/profileComponent';
@@ -28,7 +28,6 @@ import { HomeIcon, FavouriteIcon } from '../routes/tabarIcons/homeIcon'
 
 const Index = (
     <Stack>
-
         <Scene hideNavBar titleStyle={{ alignSelf: 'center' }} >
             <Scene key="drawer" drawer contentComponent={Sidebar} initial drawerPosition="left" drawerWidth={300} drawerIcon={<Image source={require('../../assets/images/menu.png')} style={{ width: 24, height: 24, marginRight: 25, }} />}>
                 <Tabs
@@ -39,8 +38,6 @@ const Index = (
                     showLabel={false}
                     {...DefaultProps.tabProps}
                 >
-
-
                     <Stack
                         key="CoinListScreen"
                         title="Home"
@@ -48,11 +45,8 @@ const Index = (
                         icon={HomeIcon}
                         {...DefaultProps.navbarProps}
                     >
-
                         <Scene key="CoinListScreen" component={CoinListContainer} Layout={CoinListComponent} />
                         <Scene key="CoinDetailScreen" component={CoinDetailsContainer} title="" Layout={CoinDetailComponent} back />
-
-
                     </Stack>
                     <Stack
                         key="FavouriteCoinScreen"
@@ -60,7 +54,7 @@ const Index = (
                         icon={FavouriteIcon}
                         {...DefaultProps.navbarProps}
                     >
-                        <Scene key="FavouriteCoinScreen" component={FavouriteCoinContainer} Layout={FavouriteListComponent} />
+                        <Scene key="FavouriteCoinScreen" component={FavouriteCoinContainer} Layout={CoinListComponent} />
                         <Scene key="CoinDetailScreen" component={CoinDetailsContainer} title="" Layout={CoinDetailComponent} back />
                     </Stack>
 
@@ -81,7 +75,7 @@ const Index = (
                         icon={FavouriteIcon}
                         {...DefaultProps.navbarProps}
                     >
-                        <Scene key="CoinFilterScreen" component={CoinFilter} Layout={FavouriteListComponent} />
+                        <Scene key="CoinFilterScreen" component={CoinFilter} Layout={CoinListComponent} />
                         <Scene key="CoinDetailScreen" component={CoinDetailsContainer} title="" Layout={CoinDetailComponent} back />
 
                     </Stack>

@@ -30,28 +30,40 @@ const CoinListComponent = ({
     sortCoins,
     shouldScrollToTop,
     goToTop,
-    isLoading
+    isLoading,
+    updateCoinsDetails,
+    showSearchUI,
+    orginalCoinsDetails,
 }) => {
 
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor='#f1f1f3' Translucent={false} barStyle='dark-content' />
-            {
-                 isLoading ? <Loader /> : null
-                 }
-            {showSortOptions ? <SortMenu
-                showSortOptions={showSortOptions}
-                sortTypes={sortTypes}
-                design={styles.sortMenu}
-                sortToggle={sortToggle}
-                sortCoins={sortCoins}
-                coinsDetails={coinsDetails} goToTop={goToTop} /> : null}
 
-            <SearchBar search={(key) => {
-                searchFilter(key, coinNames, showSearch)
-            }} onPress={closeSearch} />
+            {
+                isLoading ? <Loader /> : null
+            }
+
+            {
+                showSortOptions ? <SortMenu
+                    showSortOptions={showSortOptions}
+                    sortTypes={sortTypes}
+                    design={styles.sortMenu}
+                    sortToggle={sortToggle}
+                    sortCoins={sortCoins}
+                    coinsDetails={coinsDetails} goToTop={goToTop} /> : null
+            }
+
+            {
+                showSearchUI ? <SearchBar search={(key) => {
+                    searchFilter(key, coinNames, showSearch)
+                }} onPress={closeSearch} /> : null
+            }
+
 
             <List coins={coinsDetails}
+                orginalCoinsDetails={orginalCoinsDetails}
+                updateCoinsDetails={updateCoinsDetails}
                 favCoins={favCoins}
                 getFavCoins={getFavCoins}
                 addOrRemoveFavourite={addOrRemoveFavourite}

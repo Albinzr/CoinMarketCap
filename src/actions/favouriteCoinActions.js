@@ -3,45 +3,6 @@ import apiManager from '../api/apiManager'
 import database from '../database/database'
 let db = database.new("favourite")
 
-export const getFavCoins = (coinDetails) => {
-    return dispatch => new Promise(async (resolve, reject) => {
-        dispatch({
-            type: 'FAVOURITE_COIN_LOADING',
-            data: {
-                isLoading: true,
-            },
-        })
-        database.getAllData(db).then(coins => {
-            if (coins.total_rows > 0) {
-                var favCoinArray = coins.rows.map(favCoin => favCoin.key)
-                if (coinDetails !== undefined) {
-                    coinDetails.forEach((data) => {
-                        if (favCoinArray.includes(data.symbol)) {
-                            data["favourit"] = true
-                            console.log(data, coinDetails)
-                        }
-                    })
-                }
-
-                resolve(dispatch({
-                    type: 'FAVOURITE_COIN_RECIVED_DATA',
-                    data: {
-                        favCoins: favCoinArray,
-                        isLoading: false,
-                    },
-                }))
-            } else {
-                resolve(dispatch({
-                    type: 'FAVOURITE_COIN_RECIVED_DATA',
-                    data: {
-                        favCoins: [],
-                        isLoading: false,
-                    },
-                }))
-            }
-        })
-    })
-}
 
 
 export const addOrRemoveFavourite = (coinSymbol) => {
@@ -64,50 +25,3 @@ export const addOrRemoveFavourite = (coinSymbol) => {
     })
 }
 
-
-export const getSelectedFavCoin = (favIcons, isRefreshing = false, currency = "USD") => {
-    return dispatch => new Promise(async (resolve, reject) => {
-        dispatch({
-            type: 'FAVOURITE_COIN_LOADING',
-            data: {
-                isLoading: true,
-            },
-        })
-        if (favIcons.length > 0) {
-            apiManager.getCoins(0, 10000, "USD").then(coinDetails => {
-                var favCoinDetailsArray = []
-                coinDetails.forEach(coin => {
-                    if (favIcons.includes(coin.symbol)) {
-                        favCoinDetailsArray.push(coin)
-                    }
-                })
-                return favCoinDetailsArray
-            }).then(coinArray => {
-                resolve(dispatch({
-                    type: 'SELECTED_FAVOURITE_COIN_DETAIL_DATA',
-                    data: {
-                        selectedFavCoins: coinArray,
-                        isLoading: false
-                    },
-                }))
-            })
-        } else {
-            // Show no fav screen
-            resolve(dispatch({
-                type: 'FAVOURITE_COIN_LOADING',
-                data: {
-                    isLoading: false,
-                },
-            }))
-        }
-    })
-        .catch(favCoinError => {
-            // console.log(favCoinError, "cannot get fav coin")
-            resolve(dispatch({
-                type: 'FAVOURITE_COIN_LOADING',
-                data: {
-                    isLoading: false,
-                },
-            }))
-        })
-}

@@ -94,10 +94,7 @@ export const sortCoins = (coinsDetails, filter) => {
                 isRefreshing: false,
             },
         }))
-
-
     })
-
 }
 
 export const closeSearch = () => {
@@ -164,23 +161,57 @@ export const getCoins = (isRefreshing = false, currency = "USD", filter = sort.r
 
         }).then(coinsDetails => {
             findFavouriteCoins(coinsDetails).then(favouriteCoinTaged => {
-                debugger
-                return resolve(dispatch({
-                    type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
-                    data: {
-                        coinsDetails: favouriteCoinTaged,
-                        isRefreshing: false,
-                        isLoading: false,
-                        sort: filter
-                    },
-                }))
+
+                return favouriteCoinTaged
+
+            }).then(favouriteCoinTaged => {
+                filterFavouriteCoin(favouriteCoinTaged).then(favouriteCoinArray => {
+                    return resolve(dispatch({
+                        type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
+                        data: {
+                            coinsDetails: favouriteCoinTaged,
+                            favouriteCoinArray: favouriteCoinArray,
+                            isRefreshing: false,
+                            isLoading: false,
+                            sort: filter
+                        },
+                    }))
+                })
             })
         })
     })
 }
 
-export const updateCoinDetails
+export const updateCoinsDetails = (coinsDetails) => {
+    return dispatch => new Promise(async (resolve, reject) => {
+        filterFavouriteCoin(coinsDetails).then(favouriteCoinArray => {
+            return resolve(dispatch({
+                type: 'COIN_LIST_UPDATE_COIN_DETAILS_DATA',
+                data: {
+                    coinsDetails: coinsDetails,
+                    favouriteCoinArray: favouriteCoinArray
 
+                },
+            }))
+        })
+
+    })
+
+}
+const filterFavouriteCoin = (coinsDetails) => {
+    return new Promise((resolve, reject) => {
+        let favouriteCoinArray = []
+        for (var i = 0; i < Object.keys(coinsDetails).length; i++) {
+            if (coinsDetails[i].favourite === true) {
+                favouriteCoinArray.push(coinsDetails[i])
+            }
+            if (i === Object.keys(coinsDetails).length - 1) {
+                return resolve(favouriteCoinArray)
+            }
+        }
+
+    })
+}
 const findFavouriteCoins = (coinsDetails) => {
     return new Promise(async (resolve, reject) => {
         database.getAllData(db).then(coins => {
