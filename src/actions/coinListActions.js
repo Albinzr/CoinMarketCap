@@ -45,7 +45,7 @@ const sorter = (data, filter) => {
         case sort.topLoser:
             return parseFloat(data.percent_change_24h ? data.percent_change_24h : 999)
             break;
-        case sort.topGain:
+        case sort.topGainer:
             return parseFloat(data.percent_change_24h ? data.percent_change_24h : -999)
             break;
         case sort.price:
@@ -83,7 +83,7 @@ export const sortCoins = (coinsDetails, filter) => {
             }
             return 0;
         })
-        if (filter === sort.topGain || filter === sort.marketCap || filter === sort.volume || filter === sort.change || filter === sort.price) {
+        if (filter === sort.topGainer || filter === sort.marketCap || filter === sort.volume || filter === sort.change || filter === sort.price) {
             coins = coins.reverse()
         }
         return resolve(dispatch({
@@ -165,18 +165,15 @@ export const getCoins = (isRefreshing = false, currency = "USD", filter = sort.r
                 return favouriteCoinTaged
 
             }).then(favouriteCoinTaged => {
-                filterFavouriteCoin(favouriteCoinTaged).then(favouriteCoinArray => {
-                    return resolve(dispatch({
-                        type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
-                        data: {
-                            coinsDetails: favouriteCoinTaged,
-                            favouriteCoinArray: favouriteCoinArray,
-                            isRefreshing: false,
-                            isLoading: false,
-                            sort: filter
-                        },
-                    }))
-                })
+                return resolve(dispatch({
+                    type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
+                    data: {
+                        coinsDetails: favouriteCoinTaged,
+                        isRefreshing: false,
+                        isLoading: false,
+                        sort: filter
+                    },
+                }))
             })
         })
     })
@@ -184,17 +181,12 @@ export const getCoins = (isRefreshing = false, currency = "USD", filter = sort.r
 
 export const updateCoinsDetails = (coinsDetails) => {
     return dispatch => new Promise(async (resolve, reject) => {
-        filterFavouriteCoin(coinsDetails).then(favouriteCoinArray => {
-            return resolve(dispatch({
-                type: 'COIN_LIST_UPDATE_COIN_DETAILS_DATA',
-                data: {
-                    coinsDetails: coinsDetails,
-                    favouriteCoinArray: favouriteCoinArray
-
-                },
-            }))
-        })
-
+        return resolve(dispatch({
+            type: 'COIN_LIST_UPDATE_COIN_DETAILS_DATA',
+            data: {
+                coinsDetails: coinsDetails,
+            },
+        }))
     })
 
 }

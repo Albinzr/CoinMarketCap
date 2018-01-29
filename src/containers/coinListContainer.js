@@ -9,8 +9,8 @@ import { loadAllCoinNames, closeSearch, searchFilter, getCoins, sortCoins, sortT
 import { addOrRemoveFavourite } from '../actions/favouriteCoinActions'
 import sort from '../constants/sortConstant'
 //
-const timerIntervel = 6000000
-const sortTypes = [sort.rank, sort.price, sort.name, sort.change, sort.volume, sort.marketCap/* sort.topGain, sort.topLoser,*/]
+const timerIntervel = 60000
+const sortTypes = [sort.rank, sort.price, sort.name, sort.change, sort.volume, sort.marketCap]
 
 class CoinListContainer extends Component {
 
@@ -19,7 +19,6 @@ class CoinListContainer extends Component {
 
         this.goToCoinDetailsScreen = this.goToCoinDetailsScreen.bind(this)
         this.sortButton = this.sortButton.bind(this)
-        // this.sideBarToggle = this.sideBarToggle.bind(this)
     }
 
     static right = (props) => {
@@ -41,7 +40,6 @@ class CoinListContainer extends Component {
     }
 
     componentDidMount() {
-        Actions.refresh({ title: '                 Home' })
         this.props.navigation.setParams({
             sortButton: this.sortButton
         })
@@ -49,10 +47,10 @@ class CoinListContainer extends Component {
         const { getCoins, sort } = this.props;
         getCoins(false, "USD", sort)
         setTimeout(() => {
+            // alert("updating")
             getCoins(false, "USD", this.props.sort)
         }, timerIntervel);
     }
-
 
     render() {
 

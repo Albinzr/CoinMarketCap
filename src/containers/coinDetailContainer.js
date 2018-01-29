@@ -42,7 +42,6 @@ class coinDetailContainer extends Component {
 
     componentDidMount() {
         var { coinName, coinSymbol } = this.props.navigation.state.params
-        // Actions.refresh({ title: coinSymbol })
         this.getCoinDetailsAndGraph(coinName, coinSymbol)
     }
 

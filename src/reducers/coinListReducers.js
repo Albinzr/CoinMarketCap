@@ -102,7 +102,6 @@ export default function userReducer(state = initialState, action) {
                 return {
                     ...state,
                     coinsDetails: action.data.coinsDetails,
-                    favouriteCoinArray: action.data.favouriteCoinArray,
                     isRefreshing: action.data.isRefreshing,
                     isLoading: action.data.isLoading,
                     sort: action.data.sort
@@ -115,7 +114,6 @@ export default function userReducer(state = initialState, action) {
                 return {
                     ...state,
                     coinsDetails: action.data.coinsDetails,
-                    favouriteCoinArray: action.data.favouriteCoinArray,
                     isRefreshing: false,
                     isLoading: false,
                 };

@@ -13,5 +13,4 @@ export default {
     shouldScrollToTop: false,
     sortedCoinsDetails: [],
     showSearchUI: true,
-    favouriteCoinArray: [],
 };

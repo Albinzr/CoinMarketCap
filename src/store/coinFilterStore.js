@@ -1,6 +1,9 @@
 export default {
-    currency: "USD",
     isRefreshing: false,
-    favCoins: [],
-    sort: "rank",
+    isLoading: false,
+    showSegment: true,
+    segmentTitles: ["Top Gainer", "Top Loser"],
+    selectedSegment: "Top Gainer",
+    topGainer: [],
+    topLoser: []
 };

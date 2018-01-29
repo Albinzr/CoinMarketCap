@@ -21,6 +21,15 @@ export const FavouriteIcon = (props) => {
 
 }
 
+export const GrowthIcon = (props) => {
+    var imageURI = props.focused
+        ? require('../../../assets/images/growthSelected.png')
+        : require('../../../assets/images/growth.png')
+
+    return <Image source={imageURI} style={styles.growthIcon} />
+
+}
+
 
 const styles = StyleSheet.create({
 
@@ -31,6 +40,11 @@ const styles = StyleSheet.create({
     bookmarkIcon: {
         width: 15,
         height: 15
-    }
+    },
+
+    growthIcon: {
+        width: 20,
+        height: 20
+    },
 
 })

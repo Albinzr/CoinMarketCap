@@ -8,6 +8,8 @@ import SearchBar from '../components/searchComponent'
 import List from '../components/listComponent'
 import SortMenu from './popupList'
 import Loader from './loaderComponent'
+import SegmentConroll from './segmentComponent'
+// import sort from '../../constants/sortConstant'
 //
 var { height, width } = Dimensions.get('window')
 
@@ -34,6 +36,12 @@ const CoinListComponent = ({
     updateCoinsDetails,
     showSearchUI,
     orginalCoinsDetails,
+    showSegment,
+    segmentTitles,
+    selectedSegment,
+    updateSegment,
+    topGainer,
+    topLoser,
 }) => {
 
     return (
@@ -55,20 +63,33 @@ const CoinListComponent = ({
             }
 
             {
-                showSearchUI ? <SearchBar search={(key) => {
-                    searchFilter(key, coinNames, showSearch)
-                }} onPress={closeSearch} /> : null
+                showSearchUI ? <SearchBar
+                    search={(key) => {
+                        searchFilter(key, coinNames, showSearch)
+                    }} onPress={closeSearch} /> : null
+            }
+            {
+                showSegment ? <SegmentConroll
+                    showSegment={showSegment}
+                    segmentTitles={segmentTitles}
+                    selectedSegment={selectedSegment}
+                    updateSegment={updateSegment} /> : null
             }
 
 
-            <List coins={coinsDetails}
+            < List
+                topGainer={topGainer}
+                topLoser={topLoser}
+                coins={coinsDetails}
                 orginalCoinsDetails={orginalCoinsDetails}
                 updateCoinsDetails={updateCoinsDetails}
                 favCoins={favCoins}
                 getFavCoins={getFavCoins}
                 addOrRemoveFavourite={addOrRemoveFavourite}
+                showSegment={showSegment}
+                selectedSegment={selectedSegment}
                 loadMore={() => {
-                    getCoins()
+                    // getCoins()
                 }}
                 onSelect={goToCoinDetailsScreen}
                 isRefreshing={isRefreshing}
@@ -76,6 +97,7 @@ const CoinListComponent = ({
                     getCoins(true)
                 }}
                 shouldScrollToTop={shouldScrollToTop}
+                filter={showSegment ? segmentTitles[0] : "rank"}
             />
 
             {showSearch ? <FlatList

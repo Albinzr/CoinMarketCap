@@ -3,6 +3,7 @@ import { StyleSheet, View, ActivityIndicator, FlatList, Image, Text, TouchableOp
 //
 import colors from '../../../colors/colors'
 import apiManager from '../../api/apiManager'
+import sort from '../../constants/sortConstant'
 //
 
 export default class ListComponent extends Component {
@@ -42,26 +43,30 @@ export default class ListComponent extends Component {
     }
 
     callLoadMore() {
-        // this.props.loadMore()
-    }
-    componentDidMount = () => {
-        // this.props.getFavCoins()
+        this.props.loadMore()
     }
 
     render() {
-        const { isRefreshing,
+        let { isRefreshing,
             refresh, coins,
             onSelect,
             addOrRemoveFavourite,
             updateCoinsDetails,
             shouldScrollToTop,
-            orginalCoinsDetails
+            orginalCoinsDetails,
+            showSegment,
+            selectedSegment,
+            topGainer,
+            topLoser,
         } = this.props;
         let listLoader = null
+
         if (Object.keys(coins).length > 50) {
             listLoader = <ActivityIndicator style={{ padding: 30 }} size="large" color="gray" />
         }
-
+        // debugger
+        showSegment ? selectedSegment === sort.topGainer ? coins = topGainer : coins = topLoser : null
+        // debugger
         return (
             <View style={styles.container}>
                 {shouldScrollToTop ? this.scrollToTop() : null}
@@ -71,7 +76,6 @@ export default class ListComponent extends Component {
                         onRefresh={refresh}
                     />
                 }
-                    scrollToIndex={10}
                     ref={(ref) => this.flatlistref = ref}
                     bounces={false}
                     keyExtractor={(item, index) => item.id}
@@ -121,7 +125,7 @@ export default class ListComponent extends Component {
 
                                         updateCoinsDetails(coinArray).then(none => {
                                             addOrRemoveFavourite(item.symbol).then(none => {
-                                                console.log(none)
+                                                // console.log(none)
                                             })
                                         })
 

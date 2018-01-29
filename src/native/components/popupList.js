@@ -24,7 +24,6 @@ const PopupList = ({ design,
 
     return (
         <Modal
-            animationType="fade"
             transparent={true}
             visible={showSortOptions}
             onRequestClose={() => {
@@ -39,10 +38,9 @@ const PopupList = ({ design,
                             style={styles.list}
                             data={sortTypes}
                             renderItem={({ item }) => <TouchableOpacity onPress={() => {
+                                sortCoins(coinsDetails, item)
                                 sortToggle(showSortOptions)
-                                goToTop().then(data => {
-                                    sortCoins(coinsDetails, item)
-                                })
+                                goToTop()
                             }}>
                                 <Text style={styles.label}>{item.toUpperCase()}</Text></TouchableOpacity>}
                         />

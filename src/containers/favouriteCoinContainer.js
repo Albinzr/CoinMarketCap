@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Actions } from "react-native-router-flux";
+import { View, TouchableOpacity } from 'react-native'
 //
 import { addOrRemoveFavourite } from '../actions/favouriteCoinActions'
 import { updateCoinsDetails } from '../actions/coinListActions';
@@ -14,14 +15,13 @@ class FavouriteCoinContainer extends Component {
         })
     }
 
-    componentDidMount() {
-        // const { coinsDetails, getFavCoins } = this.props
-        // if (Object.keys(coinsDetails).length > 0) {
-        //     getFavCoins(coinsDetails)
-        // }
-
+    static right = (props) => {
+        return (
+            <TouchableOpacity onPress={() => props.sortButton()}>
+                <View style={{ width: 24, height: 24, marginRight: 25, }} />
+            </TouchableOpacity >
+        );
     }
-
     static onEnter = () => {
         Actions.refresh({
             enterTime: new Date()
@@ -47,14 +47,14 @@ class FavouriteCoinContainer extends Component {
             isLoading,
             updateCoinsDetails,
             showSearchUI,
-            favouriteCoinArray
-                 } = this.props;
+            // favouriteCoinArray
+        } = this.props;
 
         return (
             <Layout
                 orginalCoinsDetails={coinsDetails}
                 showSearch={showSearch}
-                coinsDetails={favouriteCoinArray}
+                coinsDetails={coinsDetails.filter(coin => coin.favourite)}
                 favCoins={favCoins}
                 updateCoinsDetails={updateCoinsDetails}
                 addOrRemoveFavourite={addOrRemoveFavourite}

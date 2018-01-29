@@ -18,8 +18,39 @@ export default function userReducer(state = initialState, action) {
         case 'COIN_LIST_RESET': {
             return initialState;
         }
+        case 'COIN_LIST_UPDATE_SEGMENT': {
+            if (action.data) {
+                return {
+                    ...state,
+                    selectedSegment: action.data.selectedSegment,
+                };
+            }
+            return initialState;
+        }
+        case 'COIN_LIST_UPDATE_TOP_GAINER': {
+            if (action.data) {
+                return {
+                    ...state,
+                    topGainer: action.data.topGainer,
+                };
+            }
+            return initialState;
+        }
+
+        case 'COIN_LIST_UPDATE_TOP_LOSER': {
+            if (action.data) {
+                return {
+                    ...state,
+                    topLoser: action.data.topLoser,
+                };
+            }
+            return initialState;
+        }
+
+
 
         default:
             return state;
     }
 }
+
