@@ -27,15 +27,9 @@ class FavouriteCoinContainer extends Component {
             enterTime: new Date()
         })
     }
+    getCoins() {
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (this.props.enterTime !== nextProps.enterTime) {
-    //         // this.props.getFavCoins().then(data => {
-    //         //     this.props.getSelectedFavCoin(data.data.favCoins)
-    //         // })
-    //     }
-    // }
-
+    }
     render() {
 
         const { Layout,
@@ -47,11 +41,11 @@ class FavouriteCoinContainer extends Component {
             isLoading,
             updateCoinsDetails,
             showSearchUI,
-            // favouriteCoinArray
         } = this.props;
 
         return (
             <Layout
+                getCoins={this.getCoins}
                 orginalCoinsDetails={coinsDetails}
                 showSearch={showSearch}
                 coinsDetails={coinsDetails.filter(coin => coin.favourite)}

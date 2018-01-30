@@ -33,7 +33,9 @@ class CoinFilterContainer extends Component {
     }
 
     componentWillMount = () => this.props.createAllFilter(this.props.coinsDetails)
+    getCoins() {
 
+    }
 
     render() {
 
@@ -83,6 +85,7 @@ class CoinFilterContainer extends Component {
         // debugger
         return (
             <Layout
+                getCoins={this.getCoins}
                 orginalCoinsDetails={coinsDetails}
                 showSearch={showSearch}
                 coinsDetails={coinsDetails}
