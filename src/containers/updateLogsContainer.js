@@ -37,7 +37,7 @@ export default class updateLogsContainer extends Component {
           <Text>3. Release 3.0.0 🌀</Text>
           <View style={{ margin: 10 }}></View>
 
-          <Text> - Hero/Zero</Text>
+          <Text> - Added Hero/Zero</Text>
           <Text> - Improved performance by 200% </Text>
           <Text> - Added sidebar navigation</Text>
           <Text> - Added update logs for users </Text>

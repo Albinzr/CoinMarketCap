@@ -57,7 +57,8 @@ export default class Sidebar extends Component {
                                         break;
                                     case 'Share':
                                         Share.share({
-                                            message: 'The best crypto market app ever',
+                                            message: `The best crypto market app ever.
+                                            https://play.google.com/store/apps/details?id=com.bitcoin.coinmarketcapapp&hl=en`,
                                             url: 'https://play.google.com/store/apps/details?id=com.bitcoin.coinmarketcapapp&hl=en',
                                             title: 'The best crypto market app ever'
                                         }, {
