@@ -221,7 +221,6 @@ If this causes problems for you, you may want to try changing your terminal's co
 
 
 
-
-Keystore password: 65808122-050b-11e8-971c-0a580a782616
-Key alias:         QGFsYmluLWdpdC9jb2luLW1hcmtldC1jYXA=
-Key password:      65808137-050b-11e8-971c-0a580a782616
+Keystore password: 75c2e5f9-ecdb-11e7-a7da-0a580a782c25
+Key alias:         QGFsYmluenIvY29pbi1tYXJrZXQtY2Fw
+Key password:      75c2e60b-ecdb-11e7-a7da-0a580a782c25
