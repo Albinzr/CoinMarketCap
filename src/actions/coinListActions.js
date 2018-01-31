@@ -1,6 +1,8 @@
 import apiManager from '../api/apiManager'
+import database from '../database/database'
 import sort from '../constants/sortConstant'
 //
+let db = database.new("favourite")
 
 export const loadAllCoinNames = () => {
     return dispatch => new Promise(async (resolve, reject) => {
@@ -43,7 +45,7 @@ const sorter = (data, filter) => {
         case sort.topLoser:
             return parseFloat(data.percent_change_24h ? data.percent_change_24h : 999)
             break;
-        case sort.topGain:
+        case sort.topGainer:
             return parseFloat(data.percent_change_24h ? data.percent_change_24h : -999)
             break;
         case sort.price:
@@ -55,9 +57,6 @@ const sorter = (data, filter) => {
             break;
     }
 
-    // if (filter === sortkeys.topGain) {
-    //     coinsDetails = coinsDetails.reverse()
-    // }
 }
 
 export const goToTop = () => {
@@ -84,7 +83,7 @@ export const sortCoins = (coinsDetails, filter) => {
             }
             return 0;
         })
-        if (filter === sort.topGain || filter === sort.marketCap || filter === sort.volume || filter === sort.change || filter === sort.price) {
+        if (filter === sort.topGainer || filter === sort.marketCap || filter === sort.volume || filter === sort.change || filter === sort.price) {
             coins = coins.reverse()
         }
         return resolve(dispatch({
@@ -93,13 +92,9 @@ export const sortCoins = (coinsDetails, filter) => {
                 coinsDetails: coins,
                 sort: filter,
                 isRefreshing: false,
-                shouldScrollToTop: false
             },
         }))
-
-
     })
-
 }
 
 export const closeSearch = () => {
@@ -112,10 +107,10 @@ export const closeSearch = () => {
 export const searchFilter = (key, coinNames, showSearch = true) => {
     return dispatch => new Promise(async (resolve, reject) => {
         if (!showSearch) {
-            resolve(dispatch({
+            dispatch({
                 type: 'COIN_LIST_OPEN_SEARCH',
                 data: { showSearch: true },
-            }))
+            })
         }
         const searchArray = coinNames.filter(function (item) {
             const itemData = item.name.toUpperCase()
@@ -129,67 +124,102 @@ export const searchFilter = (key, coinNames, showSearch = true) => {
     })
 }
 
-export const getCoins = (start, limit, coinsDetails, loadMore = true, isRefreshing = false, currency = "USD", filter = sort.rank) => {
-    // alert(filter)
+export const getCoins = (isRefreshing = false, currency = "USD", filter = sort.rank) => {
     return dispatch => new Promise(async (resolve, reject) => {
         if (isRefreshing) {
-            resolve(dispatch({
+            dispatch({
                 type: 'COIN_LIST_LOADING',
                 data: {
-                    isRefreshing: true
+                    isRefreshing: true,
+                    isLoading: false
                 },
-            }))
-            loadMore = true
-            coinsDetails = []
+            })
+        } else {
+            dispatch({
+                type: 'COIN_LIST_LOADING',
+                data: {
+                    isRefreshing: false,
+                    isLoading: true
+                },
+            })
         }
-        if (loadMore) {
-            resolve(dispatch({
-                type: 'COIN_LIST_LOADING',
-                data: {
-                    loadMore: false,
-                    isRefreshing: true
-                },
-            }))
-            apiManager.getCoins(start, limit, currency).then(data => {
-                if (filter !== sort.rank) {
-                    data = data.sort(compare = (data1, data2) => {
-                        if (sorter(data1, filter) < sorter(data2, filter)) {
-                            return -1;
+
+        apiManager.getCoins(0, 10000, currency).then(coinsDetails => {
+            if (filter !== sort.rank) {
+                coinsDetails = coinsDetails.sort(compare = (data1, data2) => {
+                    if (sorter(data1, filter) < sorter(data2, filter)) {
+                        return -1;
+                    }
+                    if (sorter(data1, filter) > sorter(data2, filter)) {
+                        return 1;
+                    }
+                    return 0;
+                })
+
+            }
+            return coinsDetails
+
+        }).then(coinsDetails => {
+            findFavouriteCoins(coinsDetails).then(favouriteCoinTaged => {
+
+                return favouriteCoinTaged
+
+            }).then(favouriteCoinTaged => {
+                return resolve(dispatch({
+                    type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
+                    data: {
+                        coinsDetails: favouriteCoinTaged,
+                        isRefreshing: false,
+                        isLoading: false,
+                        sort: filter
+                    },
+                }))
+            })
+        })
+    })
+}
+
+export const updateCoinsDetails = (coinsDetails) => {
+    return dispatch => new Promise(async (resolve, reject) => {
+        return resolve(dispatch({
+            type: 'COIN_LIST_UPDATE_COIN_DETAILS_DATA',
+            data: {
+                coinsDetails: coinsDetails,
+            },
+        }))
+    })
+
+}
+const filterFavouriteCoin = (coinsDetails) => {
+    return new Promise((resolve, reject) => {
+        let favouriteCoinArray = []
+        for (var i = 0; i < Object.keys(coinsDetails).length; i++) {
+            if (coinsDetails[i].favourite === true) {
+                favouriteCoinArray.push(coinsDetails[i])
+            }
+            if (i === Object.keys(coinsDetails).length - 1) {
+                return resolve(favouriteCoinArray)
+            }
+        }
+
+    })
+}
+const findFavouriteCoins = (coinsDetails) => {
+    return new Promise(async (resolve, reject) => {
+        database.getAllData(db).then(coins => {
+            if (coins.total_rows > 0) {
+                var favouriteCoinArray = coins.rows.map(favCoin => favCoin.key)
+                if (coinsDetails !== undefined) {
+                    coinsDetails.forEach((data) => {
+                        if (favouriteCoinArray.includes(data.symbol)) {
+                            data["favourite"] = true
                         }
-                        if (sorter(data1, filter) > sorter(data2, filter)) {
-                            return 1;
-                        }
-                        return 0;
                     })
                 }
-
-                if (data.length == limit) {
-                    return resolve(dispatch({
-                        type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
-                        data: {
-                            coinsDetails: data,
-                            loadMore: true,
-                            start: start + limit,
-                            isRefreshing: false,
-                            sort: filter
-                        },
-                    }))
-
-                } else {
-                    resolve(dispatch({
-                        type: 'COIN_LIST_RECIVED_COIN_DETAILS_DATA',
-                        data: {
-                            coinsDetails: coinsDetails.concat(data),
-                            loadMore: false,
-                            start: start,
-                            isRefreshing: false,
-                            sort: filter
-                        },
-                    }))
-
-                }
-            })
-            return
-        }
+                return resolve(coinsDetails)
+            } else {
+                return resolve(coinsDetails)
+            }
+        })
     })
 }

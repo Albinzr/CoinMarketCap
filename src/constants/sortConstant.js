@@ -1,13 +1,13 @@
 //Home
 const sort = {
-    rank: "rank",
-    name: "name",
-    marketCap: "marketCap",
-    volume: "volume",
-    change: "change",
-    topGain: "topGain",
-    topLoser: "topLoser",
-    price: "price"
+    rank: "Rank",
+    name: "Name",
+    marketCap: "Market Cap",
+    volume: "Volume",
+    change: "Change",
+    topGainer: "Top Gainer",
+    topLoser: "Top Loser",
+    price: "Price"
 }
 
 //currency and percentage

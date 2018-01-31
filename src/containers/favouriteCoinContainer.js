@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Actions } from "react-native-router-flux";
+import { View, TouchableOpacity } from 'react-native'
 //
-import { getFavCoins, addOrRemoveFavourite, getCoins } from '../actions/favouriteCoinActions'
+import { addOrRemoveFavourite } from '../actions/favouriteCoinActions'
+import { updateCoinsDetails } from '../actions/coinListActions';
 //
 class FavouriteCoinContainer extends Component {
 
@@ -13,62 +15,61 @@ class FavouriteCoinContainer extends Component {
         })
     }
 
-    getCoins() {
-        this.props.getCoins()
+    static right = (props) => {
+        return (
+            <TouchableOpacity onPress={() => props.sortButton()}>
+                <View style={{ width: 24, height: 24, marginRight: 25, }} />
+            </TouchableOpacity >
+        );
     }
-
-    componentDidMount() {
-        this.getCoins()
-    }
-
     static onEnter = () => {
         Actions.refresh({
             enterTime: new Date()
         })
     }
+    getCoins() {
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.enterTime !== nextProps.enterTime) {
-            this.getCoins()
-        }
     }
-
     render() {
 
         const { Layout,
-            selectedFavCoins,
+            showSearch,
+            coinsDetails,
             favCoins,
-            getFavCoins,
             addOrRemoveFavourite,
             isRefreshing,
-            getCoins,
-            isLoading
+            isLoading,
+            updateCoinsDetails,
+            showSearchUI,
         } = this.props;
 
-        return <Layout
-            selectedFavCoins={selectedFavCoins}
-            favCoins={favCoins}
-            getFavCoins={getFavCoins}
-            addOrRemoveFavourite={addOrRemoveFavourite}
-            goToCoinDetailsScreen={this.goToCoinDetailsScreen}
-            isRefreshing={isRefreshing}
-            getCoins={getCoins}
-            isLoading={isLoading}
-        />
-
+        return (
+            <Layout
+                getCoins={this.getCoins}
+                orginalCoinsDetails={coinsDetails}
+                showSearch={showSearch}
+                coinsDetails={coinsDetails.filter(coin => coin.favourite)}
+                favCoins={favCoins}
+                updateCoinsDetails={updateCoinsDetails}
+                addOrRemoveFavourite={addOrRemoveFavourite}
+                isRefreshing={isRefreshing}
+                goToCoinDetailsScreen={this.goToCoinDetailsScreen}
+                isLoading={isLoading}
+                showSearchUI={showSearchUI}
+            />
+        )
     }
 }
 
 const mapStateToProps = state =>
     ({
+        ...state.coinListReducer || {},
         ...state.favouritCoinReducer || {},
 
     });
 
 const mapDispatchToProps = {
-    getFavCoins,
-    addOrRemoveFavourite,
-    getCoins
+    addOrRemoveFavourite, updateCoinsDetails
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavouriteCoinContainer);

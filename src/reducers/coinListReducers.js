@@ -80,7 +80,7 @@ export default function userReducer(state = initialState, action) {
             if (action.data) {
                 return {
                     ...state,
-                    loadMore: action.data.loadMore,
+                    isLoading: action.data.isLoading,
                     isRefreshing: action.data.isRefreshing
                 };
             }
@@ -103,11 +103,19 @@ export default function userReducer(state = initialState, action) {
                     ...state,
                     coinsDetails: action.data.coinsDetails,
                     isRefreshing: action.data.isRefreshing,
-                    loadMore: action.data.loadMore,
-                    start: action.data.start,
-                    isRefreshing: action.data.isRefreshing,
-                    shouldScrollToTop: action.data.shouldScrollToTop,
+                    isLoading: action.data.isLoading,
                     sort: action.data.sort
+                };
+            }
+            return initialState;
+        }
+        case 'COIN_LIST_UPDATE_COIN_DETAILS_DATA': {
+            if (action.data) {
+                return {
+                    ...state,
+                    coinsDetails: action.data.coinsDetails,
+                    isRefreshing: false,
+                    isLoading: false,
                 };
             }
             return initialState;

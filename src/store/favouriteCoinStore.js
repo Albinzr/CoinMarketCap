@@ -1,6 +1,7 @@
 export default {
     favCoins: [],
-    selectedFavCoins: [],
     isRefreshing: false,
-    isLoading: true
+    isLoading: false,
+    showSearch: false,
+    showSearchUI: false
 };

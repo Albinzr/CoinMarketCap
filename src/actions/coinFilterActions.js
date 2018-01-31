@@ -1,7 +1,7 @@
 import apiManager from '../api/apiManager'
 import sort from '../constants/sortConstant'
 //
-
+var filterArray = [sort.topGainer, sort.topLoser,]
 const sorter = (data, filter) => {
     switch (filter) {
 
@@ -23,7 +23,7 @@ const sorter = (data, filter) => {
         case sort.topLoser:
             return parseFloat(data.percent_change_24h ? data.percent_change_24h : 999)
             break;
-        case sort.topGain:
+        case sort.topGainer:
             return parseFloat(data.percent_change_24h ? data.percent_change_24h : -999)
             break;
         case sort.price:
@@ -49,7 +49,7 @@ export const sortCoins = (coinsDetails, filter) => {
             }
             return 0;
         })
-        if (filter === sort.topGain || filter === sort.marketCap || filter === sort.volume || filter === sort.change || filter === sort.price) {
+        if (filter === sort.topGainer || filter === sort.marketCap || filter === sort.volume || filter === sort.change || filter === sort.price) {
             coins = coins.reverse()
         }
 
@@ -64,3 +64,54 @@ export const sortCoins = (coinsDetails, filter) => {
 
 }
 
+
+export const updateSegment = (selectedSegment) => {
+    return dispatch => new Promise(async (resolve, reject) => {
+        return resolve(dispatch({
+            type: 'COIN_LIST_UPDATE_SEGMENT',
+            data: {
+                selectedSegment: selectedSegment,
+            },
+        }))
+    })
+}
+
+export const createAllFilter = (coinsDetails) => {
+    return dispatch => new Promise(async (resolve, reject) => {
+
+        filterArray.forEach(filterKey => {
+
+            let coins = coinsDetails.sort(compare = (data1, data2) => {
+
+                let filter = filterKey
+                if (sorter(data1, filter) < sorter(data2, filter)) {
+                    return -1;
+                }
+                if (sorter(data1, filter) > sorter(data2, filter)) {
+                    return 1;
+                }
+                return 0;
+            })
+            if (filterKey === sort.topGainer) {
+
+                return resolve(dispatch({
+                    type: 'COIN_LIST_UPDATE_TOP_GAINER',
+                    data: {
+                        topGainer: coins.reverse().slice(0, 100),
+                    },
+                }))
+            } else if (filterKey === sort.topLoser) {
+                return resolve(dispatch({
+                    type: 'COIN_LIST_UPDATE_TOP_LOSER',
+                    data: {
+                        topLoser: coins.slice(0, 100),
+                    },
+                }))
+            }
+        })
+
+        //
+
+
+    })
+}

@@ -5,12 +5,12 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 
 //
-import { loadAllCoinNames, closeSearch, searchFilter, getCoins, sortCoins, sortToggle, goToTop } from '../actions/coinListActions';
-import { getFavCoins, addOrRemoveFavourite } from '../actions/favouriteCoinActions'
+import { loadAllCoinNames, closeSearch, searchFilter, getCoins, sortCoins, sortToggle, goToTop, updateCoinsDetails } from '../actions/coinListActions';
+import { addOrRemoveFavourite } from '../actions/favouriteCoinActions'
 import sort from '../constants/sortConstant'
 //
 const timerIntervel = 60000
-const sortTypes = [sort.rank, sort.price, sort.name, sort.change, sort.volume, sort.marketCap/* sort.topGain, sort.topLoser,*/]
+const sortTypes = [sort.rank, sort.price, sort.name, sort.change, sort.volume, sort.marketCap]
 
 class CoinListContainer extends Component {
 
@@ -19,7 +19,6 @@ class CoinListContainer extends Component {
 
         this.goToCoinDetailsScreen = this.goToCoinDetailsScreen.bind(this)
         this.sortButton = this.sortButton.bind(this)
-        // this.sideBarToggle = this.sideBarToggle.bind(this)
     }
 
     static right = (props) => {
@@ -41,29 +40,17 @@ class CoinListContainer extends Component {
     }
 
     componentDidMount() {
-        Actions.refresh({ title: '                 Home' })
-
         this.props.navigation.setParams({
             sortButton: this.sortButton
         })
-        const {
-            getCoins,
-            coinsDetails,
-            start,
-            limit,
-            loadMore,
-            loadAllCoinNames,
-            sort
-             } = this.props;
-
-        getCoins(0, 10000, coinsDetails, loadMore, false, "USD", sort)
         loadAllCoinNames()
+        const { getCoins, sort } = this.props;
+        getCoins(false, "USD", sort)
         setTimeout(() => {
-            getCoins(0, 10000, coinsDetails, loadMore, false, "USD", this.props.sort)
+            // alert("updating")
+            getCoins(false, "USD", this.props.sort)
         }, timerIntervel);
-
     }
-
 
     render() {
 
@@ -74,29 +61,31 @@ class CoinListContainer extends Component {
             closeSearch,
             coinsDetails,
             favCoins,
-            getFavCoins,
             addOrRemoveFavourite,
             getCoins,
-            start,
-            limit,
-            loadMore,
             isRefreshing,
             showSortOptions,
-            searchArray, sortToggle, sortCoins,
-            shouldScrollToTop, goToTop } = this.props;
+            searchArray,
+            sortToggle,
+            sortCoins,
+            shouldScrollToTop,
+            goToTop,
+            isLoading,
+            updateCoinsDetails,
+            showSearchUI,
+         } = this.props;
         return (
-            <Layout searchFilter={searchFilter}
+            <Layout
+                orginalCoinsDetails={coinsDetails}
+                searchFilter={searchFilter}
                 coinNames={coinNames}
                 showSearch={showSearch}
                 closeSearch={closeSearch}
                 coinsDetails={coinsDetails}
                 favCoins={favCoins}
-                getFavCoins={getFavCoins}
+                updateCoinsDetails={updateCoinsDetails}
                 addOrRemoveFavourite={addOrRemoveFavourite}
                 getCoins={getCoins}
-                start={start}
-                limit={limit}
-                loadMore={loadMore}
                 isRefreshing={isRefreshing}
                 searchArray={searchArray}
                 goToCoinDetailsScreen={this.goToCoinDetailsScreen}
@@ -106,6 +95,8 @@ class CoinListContainer extends Component {
                 sortCoins={sortCoins}
                 shouldScrollToTop={shouldScrollToTop}
                 goToTop={goToTop}
+                isLoading={isLoading}
+                showSearchUI={showSearchUI}
             />
         )
 
@@ -115,13 +106,12 @@ class CoinListContainer extends Component {
 const mapStateToProps = state =>
     ({
         ...state.coinListReducer || {},
-        ...state.favouritCoinReducer || {}
     });
 
 
 const mapDispatchToProps = {
-    loadAllCoinNames, closeSearch, searchFilter, getCoins, sortCoins, sortToggle, goToTop,
-    getFavCoins, addOrRemoveFavourite
+    loadAllCoinNames, closeSearch, searchFilter, getCoins, sortCoins, sortToggle, goToTop, updateCoinsDetails,
+    addOrRemoveFavourite
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoinListContainer);

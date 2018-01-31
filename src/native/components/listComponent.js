@@ -3,6 +3,7 @@ import { StyleSheet, View, ActivityIndicator, FlatList, Image, Text, TouchableOp
 //
 import colors from '../../../colors/colors'
 import apiManager from '../../api/apiManager'
+import sort from '../../constants/sortConstant'
 //
 
 export default class ListComponent extends Component {
@@ -14,9 +15,8 @@ export default class ListComponent extends Component {
         this.flatlistRef = null
     }
 
-    getFavIcon(coinSymbol) {
-        let coins = this.props.favCoins
-        if (coins.includes(coinSymbol)) {
+    getFavIcon(favourite = false) {
+        if (favourite) {
             return require("../../assets/images/bookmark1.png")
         } else {
             return require("../../assets/images/bookmark2.png")
@@ -45,23 +45,28 @@ export default class ListComponent extends Component {
     callLoadMore() {
         this.props.loadMore()
     }
-    componentDidMount = () => {
-        this.props.getFavCoins()
-    }
 
     render() {
-        const { isRefreshing,
+        let { isRefreshing,
             refresh, coins,
             onSelect,
             addOrRemoveFavourite,
-            getFavCoins,
-            shouldScrollToTop
+            updateCoinsDetails,
+            shouldScrollToTop,
+            orginalCoinsDetails,
+            showSegment,
+            selectedSegment,
+            topGainer,
+            topLoser,
         } = this.props;
         let listLoader = null
+
         if (Object.keys(coins).length > 50) {
             listLoader = <ActivityIndicator style={{ padding: 30 }} size="large" color="gray" />
         }
-
+        // debugger
+        showSegment ? selectedSegment === sort.topGainer ? coins = topGainer : coins = topLoser : null
+        // debugger
         return (
             <View style={styles.container}>
                 {shouldScrollToTop ? this.scrollToTop() : null}
@@ -71,7 +76,6 @@ export default class ListComponent extends Component {
                         onRefresh={refresh}
                     />
                 }
-                    scrollToIndex={10}
                     ref={(ref) => this.flatlistref = ref}
                     bounces={false}
                     keyExtractor={(item, index) => item.id}
@@ -84,7 +88,7 @@ export default class ListComponent extends Component {
                     onEndReached={this.callLoadMore}
                     scrollToIndex={0}
                     ListFooterComponent={listLoader}
-                    renderItem={({ item }) =>
+                    renderItem={({ index, item }) =>
                         <TouchableOpacity onPress={() => {
                             onSelect(item.id, item.symbol)
                         }
@@ -93,7 +97,7 @@ export default class ListComponent extends Component {
                                 <View style={styles.coinContainer} >
                                     <Image style={styles.coinImage} source={{ uri: apiManager.getCoinIcon(item.id) }} resizeMode="cover" />
                                     <View style={styles.coinNameContainer}>
-                                        <Text style={styles.coinHeader}>{`${item.symbol}`.toUpperCase()}</Text>
+                                        <Text style={styles.coinHeader}>{item.symbol.toUpperCase()}</Text>
                                         <Text style={styles.coinSubHeader}>{item.name}</Text>
                                     </View>
                                 </View>
@@ -104,13 +108,32 @@ export default class ListComponent extends Component {
                                         style={styles.indicatorIcon}
                                         source={this.indicatorIcon(item.percent_change_24h)} /></Text>
                                     <TouchableOpacity onPress={() => {
-                                        addOrRemoveFavourite(item.symbol).then(data => {
-                                            getFavCoins()
+
+                                        let coinArray = Object.assign([], orginalCoinsDetails)
+
+                                        coinArray.forEach(coin => {
+                                            if (item.symbol === coin.symbol) {
+
+                                                if (item.favourite === undefined || item.favourite === false) {
+                                                    coin["favourite"] = true
+
+                                                } else {
+                                                    coin["favourite"] = false
+                                                }
+                                            }
                                         })
+
+                                        updateCoinsDetails(coinArray).then(none => {
+                                            addOrRemoveFavourite(item.symbol).then(none => {
+                                                // console.log(none)
+                                            })
+                                        })
+
+
                                     }}>
                                         <Image
                                             style={{ resizeMode: 'contain', alignSelf: 'center', width: 24, height: 24, padding: 0, margin: 0 }}
-                                            source={this.getFavIcon(item.symbol)} />
+                                            source={this.getFavIcon(item.favourite)} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
