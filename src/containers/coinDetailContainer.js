@@ -22,6 +22,7 @@ class coinDetailContainer extends Component {
         }
     }
     selectedButton(graphLimit) {
+        debugger
         if (this.props.graphLimit === graphLimit) {
             return { backgroundColor: "#b4c3d5", color: 'white', elevation: 1 }
         }
@@ -37,7 +38,7 @@ class coinDetailContainer extends Component {
 
     getCoinDetailsAndGraph(coinName, coinSymbol) {
         this.props.getCoinDetails(coinName)
-        this.props.getCoinGraph(coinSymbol)
+        this.props.getCoinGraph(coinName)
     }
 
     componentDidMount() {

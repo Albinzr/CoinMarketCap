@@ -21,6 +21,10 @@ class CoinListContainer extends Component {
         this.sortButton = this.sortButton.bind(this)
     }
 
+    static navigatorStyle = {
+        tabBarHidden: true,
+    }
+
     static right = (props) => {
         return (
             <TouchableOpacity onPress={() => props.sortButton()}>
@@ -40,16 +44,25 @@ class CoinListContainer extends Component {
     }
 
     componentDidMount() {
+        Actions.refresh({ key: 'CoinListScreen', hideTabBar: true });
+
         this.props.navigation.setParams({
             sortButton: this.sortButton
         })
+
         loadAllCoinNames()
+
         const { getCoins, sort } = this.props;
-        getCoins(false, "USD", sort)
-        setTimeout(() => {
+
+        getCoins(false, "USD", sort).then(() => {
+            Actions.refresh({ key: 'CoinListScreen', hideTabBar: false });
+        })
+
+        setInterval(() => {
             // alert("updating")
-            getCoins(false, "USD", this.props.sort)
+            getCoins(true, "USD", this.props.sort)
         }, timerIntervel);
+
     }
 
     render() {

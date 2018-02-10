@@ -92,30 +92,32 @@ const CoinDetailComponent = ({
                             return (
                                 <View style={styles.chartContainer}>
                                     <View style={styles.chartButtonContainer} >
-                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.symbol, '1day')}
+                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.name, 1)}
                                         >
-                                            <Text style={[styles.chartButton, selectedButton("1day")]}>{'1D'}</Text>
+                                            <Text style={[styles.chartButton, selectedButton(1)]}>{'1D'}</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.symbol, '7day')}>
-                                            <Text style={[styles.chartButton, selectedButton("7day")]}>{'7D'}</Text>
+                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.name, 7)}>
+                                            <Text style={[styles.chartButton, selectedButton(7)]}>{'7D'}</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.symbol, '30day')}>
-                                            <Text style={[styles.chartButton, selectedButton("30day")]}>{'1M'}</Text>
+                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.name, 30)}>
+                                            <Text style={[styles.chartButton, selectedButton(30)]}>{'1M'}</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.symbol, '90day')}>
-                                            <Text style={[styles.chartButton, selectedButton("90day")]}>{'3M'}</Text>
+                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.name, 90)}>
+                                            <Text style={[styles.chartButton, selectedButton(90)]}>{'3M'}</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.symbol, '180day')}
+                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.name, 180)}
                                         >
-                                            <Text style={[styles.chartButton, selectedButton("180day")]}>{'6M'}</Text>
+                                            <Text style={[styles.chartButton, selectedButton(180)]}>{'6M'}</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.symbol, '365day')}
+                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.name, 365)}
                                         >
-                                            <Text style={[styles.chartButton, selectedButton("365day")]}>{'1Y'}</Text>
+                                            <Text style={[styles.chartButton, selectedButton(365)]}>{'1Y'}</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.symbol)}>
-                                            <Text style={[styles.chartButton, selectedButton(undefined)]}>{'All'}</Text>
+                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.name, 99999999)}
+                                        >
+                                            <Text style={[styles.chartButton, selectedButton(99999999)]}>{'All'}</Text>
                                         </TouchableOpacity>
+
                                     </View>
                                     <View >
                                         <AreaChart
@@ -301,7 +303,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     chart: {
-        height: width - 100,
+        height: width,
         width: width,
     },
     chartInset: {

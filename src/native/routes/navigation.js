@@ -47,7 +47,7 @@ const Index = (
                         icon={HomeIcon}
                         {...DefaultProps.navbarProps}
                     >
-                        <Scene key="CoinListScreen" component={CoinListContainer} Layout={CoinListComponent} />
+                        <Scene key="CoinListScreen" component={CoinListContainer} Layout={CoinListComponent} hideTabBar={true} />
                         <Scene key="CoinDetailScreen" component={CoinDetailsContainer} title="" Layout={CoinDetailComponent} back />
                     </Stack>
                     <Stack

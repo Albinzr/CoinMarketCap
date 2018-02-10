@@ -1,8 +1,8 @@
 function debug(name, result) {
 
-    // console.log(`-----------------------${name}-----------------------`)
-    // console.log(result)
-    // console.log("-------------------------------------------------")
+    console.log(`-----------------------${name}-----------------------`)
+    console.log(result)
+    console.log("-------------------------------------------------")
 
 }
 
@@ -10,9 +10,9 @@ class Api {
 
     request(url, method = "GET", params = null, header = null) {
 
-        // debug("url", url)
-        // debug("params", params)
-        // debug("header", header)
+        debug("url", url)
+        debug("params", params)
+        debug("header", header)
 
 
         var options = {

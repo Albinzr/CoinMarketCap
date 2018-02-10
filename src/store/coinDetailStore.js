@@ -5,7 +5,7 @@ export default {
     volume: [],
     marketCap: [],
     coinDetails: {},
-    graphLimit: "1day",
+    graphLimit: 1,
     isRefreshing: false,
     isLoading: true,
     isRefreshing: false

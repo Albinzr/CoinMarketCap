@@ -81,12 +81,11 @@ export default class ListComponent extends Component {
                     keyExtractor={(item, index) => item.id}
                     data={coins}
                     removeClippedSubviews={false}
-                    initialNumToRender={50}
+                    initialNumToRender={15}
                     maxToRenderPerBatch={50}
-                    windowSize={50}
-                    onEndThreshold={100}
+                    windowSize={8}
+                    onEndThreshold={0}
                     onEndReached={this.callLoadMore}
-                    scrollToIndex={0}
                     ListFooterComponent={listLoader}
                     renderItem={({ index, item }) =>
                         <TouchableOpacity onPress={() => {

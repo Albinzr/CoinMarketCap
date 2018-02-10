@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 
 //
-import { sortCoins, } from '../actions/coinFilterActions';
+
 import sort from '../constants/sortConstant'
 //
 import { addOrRemoveFavourite } from '../actions/favouriteCoinActions'

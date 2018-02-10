@@ -77,11 +77,12 @@ export const updateSegment = (selectedSegment) => {
 }
 
 export const createAllFilter = (coinsDetails) => {
+    let coinArray = Object.assign([], coinsDetails)
     return dispatch => new Promise(async (resolve, reject) => {
 
         filterArray.forEach(filterKey => {
 
-            let coins = coinsDetails.sort(compare = (data1, data2) => {
+            let coins = coinArray.sort(compare = (data1, data2) => {
 
                 let filter = filterKey
                 if (sorter(data1, filter) < sorter(data2, filter)) {

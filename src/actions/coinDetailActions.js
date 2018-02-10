@@ -22,7 +22,7 @@ export const getCoinDetails = (coinName, Currency = "USD") => {
 }
 
 
-export const getCoinGraph = (coinSymbol, range = "1day") => {
+export const getCoinGraph = (coinSymbol, range = 1) => {
     return dispatch => new Promise(async (resolve, reject) => {
         resolve(dispatch({
             type: 'COIN_DETAIL_LOADING',
@@ -31,16 +31,16 @@ export const getCoinGraph = (coinSymbol, range = "1day") => {
             },
         }))
         apiManager.getCoinGraph(coinSymbol, range).then(data => {
+            debugger
             resolve(dispatch({
                 type: 'COIN_DETAIL_GRAPH_DATA',
                 data: {
-                    price: data.price,
-                    volume: data.volume,
-                    marketCap: data.market_cap,
-                    graphLimit: "1day",
+                    price: data.price_usd,
+                    volume: data.volume_usd,
+                    marketCap: data.market_cap_by_available_supply,
+                    graphLimit: range,
                     isLoading: false,
                     isRefreshing: false,
-                    graphLimit: range
                 },
             }))
         })
