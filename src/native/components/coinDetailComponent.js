@@ -113,9 +113,9 @@ const CoinDetailComponent = ({
                                         >
                                             <Text style={[styles.chartButton, selectedButton(365)]}>{'1Y'}</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.name, 99999999)}
+                                        <TouchableOpacity onPress={() => getCoinGraph(coinDetails.name, null)}
                                         >
-                                            <Text style={[styles.chartButton, selectedButton(99999999)]}>{'All'}</Text>
+                                            <Text style={[styles.chartButton, selectedButton(null)]}>{'All'}</Text>
                                         </TouchableOpacity>
 
                                     </View>

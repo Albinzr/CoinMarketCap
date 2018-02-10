@@ -1,7 +1,7 @@
 {
   "expo": {
     "sdkVersion": "23.0.0",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "name": "COIN MARKET CAP",
     "icon": "./src/assets/images/icon.png",
     "slug": "coin-market-cap",
@@ -15,7 +15,7 @@
       "bundleIdentifier": "com.bitcoin.coinmarketcap"
     },
     "android": {
-      "versionCode": 3,
+      "versionCode": 4,
       "package": "com.bitcoin.coinmarketcapapp",
       "permissions": [
         "CAMERA",

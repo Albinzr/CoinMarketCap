@@ -59,7 +59,7 @@ class URL {
         let graphTime = getGraphTime(graphLimit)
         if (coinName && graphLimit) {
             return `https://graphs2.coinmarketcap.com/currencies/${coinName}/${graphTime.start}/${graphTime.end}`
-        } else {
+        } else if (coinName) {
             return `https://graphs2.coinmarketcap.com/currencies/${coinName}`
         }
     }
