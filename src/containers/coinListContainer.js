@@ -49,11 +49,8 @@ class CoinListContainer extends Component {
         this.props.navigation.setParams({
             sortButton: this.sortButton
         })
-
+        const { getCoins, sort, loadAllCoinNames } = this.props;
         loadAllCoinNames()
-
-        const { getCoins, sort } = this.props;
-
         getCoins(false, "USD", sort).then(() => {
             Actions.refresh({ key: 'CoinListScreen', hideTabBar: false });
         })

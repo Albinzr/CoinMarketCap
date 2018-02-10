@@ -117,6 +117,7 @@ export const searchFilter = (key, coinNames, showSearch = true) => {
             const textData = key.toUpperCase()
             return itemData.indexOf(textData) > -1
         })
+        debugger
         resolve(dispatch({
             type: 'COIN_LIST_SEARCH_LIST',
             data: { searchArray: searchArray },

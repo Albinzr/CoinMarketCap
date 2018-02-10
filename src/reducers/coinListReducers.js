@@ -27,6 +27,7 @@ export default function userReducer(state = initialState, action) {
 
         case 'COIN_LIST_RECIVED_COIN_NAME_DATA': {
             if (action.data) {
+                debugger
                 return {
                     ...state,
                     loading: false,

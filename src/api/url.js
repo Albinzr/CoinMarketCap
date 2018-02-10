@@ -46,15 +46,6 @@ class URL {
     // Example: https://graphs.coinmarketcap.com/currencies/bitcoin/
 
 
-    // getCoinGraph(coinName, graphLimit) {
-    //     if (coinName && graphLimit) {
-    //         return `http://coincap.io/history/${graphLimit}/${coinName}`
-    //     } else {
-    //         return `http://coincap.io/history/${coinName}`
-    //     }
-    // }
-
-
     getCoinGraph(coinName, graphLimit = 1) {
         let graphTime = getGraphTime(graphLimit)
         if (coinName && graphLimit) {
