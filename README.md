@@ -1,4 +1,15 @@
 
+### Run
+
+```
+
+npm install
+npm start
+
+```
+### Play Store
+https://play.google.com/store/apps/details?id=com.bitcoin.coinmarketcapapp
+
 ### Coin Listing
 ![alt Coin Listing](https://lh3.googleusercontent.com/NkUeLY1D4kyLlpbrJoO8mEhI8yrenqLmk0MGqsd8eBtMF_NKXQ3Er6_ayIgo8jboyxA=w720-h310-rw)
 
@@ -9,15 +20,7 @@
 ![alt Coin Details](https://lh3.googleusercontent.com/BTxF3obldNybs2oyMIkR0AbaZhBCj3r2_sUsOzbTW1cQ7NTVrTGsftnPnovxY3YZqPY=w720-h310-rw)
 
 ### Coin Search
-![alt Coin Search](https://lh3.googleusercontent.com/YzBWVx9_gLbnXfm2fPyl1GTpco_J3_M5LTtuFC_omp8WE1ASaDOm0Qo7MtP3FLrkcQ=w1920-h938-rw)
+![alt Coin Search](https://lh3.googleusercontent.com/YzBWVx9_gLbnXfm2fPyl1GTpco_J3_M5LTtuFC_omp8WE1ASaDOm0Qo7MtP3FLrkcQ=w720-h310-rw)
 
 
-### Run
 
-```
-
-npm install
-npm start
-
-
-```
